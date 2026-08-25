@@ -1,0 +1,231 @@
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-surface": "#e5e2e1", "on-tertiary-container": "#005dc5", "primary": "#ebffe2", "surface-container-lowest": "#0e0e0e", "surface-container-high": "#2a2a2a", "secondary": "#fff9ef", "on-primary-fixed": "#002203", "secondary-container": "#ffdb3c", "error": "#ffb4ab", "on-secondary": "#3a3000", "on-tertiary": "#002e69", "championship-gold": "#FFD700", "on-secondary-container": "#725f00", "primary-fixed-dim": "#00e639", "glass-overlay": "rgba(255, 255, 255, 0.1)", "surface-obsidian": "#000000", "primary-fixed": "#72ff70", "tertiary-container": "#cedcff", "on-primary-container": "#007117", "pitch-green": "#00FF41", "inverse-primary": "#006e16", "on-primary-fixed-variant": "#00530e", "surface-variant": "#353534", "tertiary-fixed": "#d8e2ff", "tertiary": "#f9f8ff", "on-secondary-fixed": "#221b00", "on-secondary-fixed-variant": "#544600", "surface-container-low": "#1c1b1b", "on-error": "#690005", "surface-charcoal": "#1C1C1E", "inverse-on-surface": "#313030", "tertiary-fixed-dim": "#adc6ff", "outline": "#84967e", "secondary-fixed": "#ffe16d", "status-red": "#FF3B30", "on-background": "#e5e2e1", "surface-container": "#201f1f", "on-tertiary-fixed-variant": "#004493", "primary-container": "#00ff41", "outline-variant": "#3b4b37", "on-primary": "#003907", "surface": "#131313", "on-tertiary-fixed": "#001a41", "surface-dim": "#131313", "on-error-container": "#ffdad6", "surface-tint": "#00e639", "background": "#131313", "surface-bright": "#393939", "surface-container-highest": "#353534", "error-container": "#93000a", "inverse-surface": "#e5e2e1", "secondary-fixed-dim": "#e9c400", "on-surface-variant": "#b9ccb2" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "gutter": "12px", "stack-tight": "4px", "base": "8px", "margin-mobile": "16px", "stack-loose": "20px", "margin-desktop": "24px" }, "fontFamily": { "stats-mono": ["Inter"], "body-lg": ["Inter"], "title-md": ["Inter"], "display-hero": ["Inter"], "body-sm": ["Inter"], "label-caps": ["Inter"], "headline-lg": ["Inter"], "headline-lg-mobile": ["Inter"] }, "fontSize": { "stats-mono": ["18px", { "lineHeight": "22px", "fontWeight": "700" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "500" }], "title-md": ["20px", { "lineHeight": "26px", "fontWeight": "700" }], "display-hero": ["48px", { "lineHeight": "48px", "letterSpacing": "-0.04em", "fontWeight": "900" }], "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }], "headline-lg": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "800" }], "headline-lg-mobile": ["24px", { "lineHeight": "28px", "fontWeight": "800" }] } } } };</script><style>@layer base { body { @apply bg-surface text-on-surface; -webkit-tap-highlight-color: transparent; } .pb-safe { padding-bottom: env(safe-area-inset-bottom); } .pt-safe { padding-top: env(safe-area-inset-top); } } .glass { backdrop-filter: blur(20px); background: rgba(19, 19, 19, 0.8); }</style></head><body class="font-body-lg text-body-lg"><header class="fixed top-0 w-full z-50 glass pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-margin-mobile flex items-center gap-gutter"><button class="w-10 h-10 flex items-center justify-center rounded-full active:bg-white/10 transition-colors" onclick="history.back()"><span class="material-symbols-outlined text-on-surface">arrow_back_ios_new</span></button><div class="flex items-center gap-base overflow-hidden"><img alt="UFL Brand Logo" class="h-6 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHZuHB8GtcUc6ZJSFBTMnmPc3daURmnOeOad6Fq0ZRITufrDlfNTGWvvjNa3Pr9X-SmqL6aAexvgcWw8Dm7XkfjSDtAGlqRh-XYFmzXgSafBFCmmikqNa4Fm0K0iHu02OWFpsv2foIGk-J96rRCV8dFdZfQy0y7kOdF5ihyl6ZvJnOLPbyTsYJi7oYH_0FMr0gPF2KlFEp2eOlpPrlQVDa1qpRt0obcb9XSJrM7hqcErmBEjBhaVdG"/><h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface truncate tracking-tight uppercase">Draft Player</h1></div></div></header><main class="relative w-full pt-16 bg-surface min-h-screen px-margin-mobile"><div class="flex flex-col w-full relative">
+<!-- Draft Header HUD -->
+<section class="relative z-10 w-full px-margin-mobile mb-margin-desktop">
+<div class="bg-surface-charcoal rounded-xl p-base flex justify-between items-center shadow-md relative overflow-hidden">
+<!-- Subtle gradient overlay -->
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-glass-overlay to-transparent opacity-20"></div>
+<!-- Match Status -->
+<div class="flex items-center gap-gutter z-10">
+<div class="flex flex-col items-center">
+<img class="w-8 h-8 object-contain" data-alt="Real Madrid logo, sleek modern minimal style, high contrast dark theme, subtle green glow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYlwEmh6MQMVN7ETK-oehpydiRlAYf8N0FYDBAXo2_dGscLKBkayxMXQYS5IONDV1L_QV6nxvo6xeeSiJnIcpBFR2TXHapJ5Y02CxLRv_mZ_u6XQIMIfUrMOBR-sRcmDqzTDH-kwGj-NOKENnYjycDbAan1BEF7FGKr6ZzIvbR8KEFQqyUsv0EIpFMF08j9uEjXG05FLfJP7-QzOJeZSQGV8oTfxJux2e7nB8bmwNnMjH8w1tjQa1x"/>
+<span class="font-label-caps text-label-caps text-on-surface-variant mt-1">RMA</span>
+</div>
+<div class="flex flex-col items-center justify-center">
+<div class="bg-surface-obsidian px-3 py-1 rounded-full shadow-inner flex items-center justify-center gap-2">
+<span class="font-stats-mono text-stats-mono text-on-surface">1</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">-</span>
+<span class="font-stats-mono text-stats-mono text-on-surface">0</span>
+</div>
+<div class="flex items-center gap-1 mt-1">
+<span class="w-2 h-2 rounded-full bg-status-red animate-pulse"></span>
+<span class="font-label-caps text-[10px] text-status-red uppercase">Live 42'</span>
+</div>
+</div>
+<div class="flex flex-col items-center">
+<img class="w-8 h-8 object-contain" data-alt="Barcelona logo, sleek modern minimal style, high contrast dark theme, subtle green glow" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQuR6959Qvdtjs9Xwr4S9LXjRq2zb95WdEj7hUA2gYs4IbOsaWk_EpGRkpcv8qe6g6BPeAAdnwYlCyu52VWkE_chvQec4uAvMK_-Dw3uz96tY-Sf4frAITFkpNK3-GgHil7_GR_-EeJnc0ds9cCb4zg1gSXkcdqvTkjS9xejjJdzn2Zm-rXzaqt4dHehejHzt2pukA7BkU5gaaPe439mqHlNKsjYxngj_g4S6Q1nE1Gcj0EBrhDPU2"/>
+<span class="font-label-caps text-label-caps text-on-surface-variant mt-1">FCB</span>
+</div>
+</div>
+<!-- Draft Phase Info -->
+<div class="flex flex-col items-end z-10 text-right pl-4 border-l border-white/10">
+<span class="font-label-caps text-label-caps text-primary uppercase">Your Pick</span>
+<span class="font-stats-mono text-title-md text-on-surface">Round 1/2</span>
+</div>
+</div>
+</section>
+<!-- Countdown Timer Focus Area -->
+<section class="w-full flex justify-center items-center py-stack-loose relative">
+<!-- Pulse Effect -->
+<div class="absolute w-32 h-32 bg-primary-fixed/20 rounded-full blur-[40px] animate-pulse"></div>
+<div class="relative z-10 flex flex-col items-center">
+<div class="text-[64px] font-display-hero text-pitch-green leading-none drop-shadow-[0_0_15px_rgba(0,255,65,0.3)] tracking-tighter" id="draft-timer">35</div>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest mt-2">Seconds Remaining</span>
+</div>
+</section>
+<!-- Player Selection Area -->
+<section class="w-full mt-margin-mobile flex-1 flex flex-col min-h-0 bg-surface-container-low rounded-t-3xl shadow-[0_-10px_30px_rgba(0,0,0,0.5)]">
+<!-- Position Tabs -->
+<div class="flex px-margin-mobile pt-margin-mobile gap-2 overflow-x-auto no-scrollbar scroll-smooth">
+<button class="bg-pitch-green text-surface-obsidian font-label-caps text-label-caps px-4 py-2 rounded-full whitespace-nowrap shadow-[0_0_10px_rgba(0,255,65,0.2)]">ATTACKERS</button>
+<button class="bg-surface-charcoal text-on-surface-variant font-label-caps text-label-caps px-4 py-2 rounded-full whitespace-nowrap hover:bg-surface-variant transition-colors">MIDFIELDERS</button>
+<button class="bg-surface-charcoal text-on-surface-variant font-label-caps text-label-caps px-4 py-2 rounded-full whitespace-nowrap hover:bg-surface-variant transition-colors">DEFENDERS</button>
+<button class="bg-surface-charcoal text-on-surface-variant font-label-caps text-label-caps px-4 py-2 rounded-full whitespace-nowrap hover:bg-surface-variant transition-colors">GOALKEEPERS</button>
+</div>
+<!-- Player List -->
+<div class="flex-1 overflow-y-auto px-margin-mobile py-margin-mobile space-y-2 relative pb-[120px]">
+<!-- Player Card: Available & High Value -->
+<div class="bg-surface-charcoal rounded-xl p-3 flex items-center justify-between shadow-sm relative overflow-hidden group">
+<div class="absolute top-0 bottom-0 left-0 w-1 bg-championship-gold"></div>
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-obsidian relative">
+<img class="w-full h-full object-cover" data-alt="Headshot of Vinícius Júnior, dramatic stadium lighting, high contrast, dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChUmZa9SwpDhmI6B2HyR5dLemxTT_pV6Y8-uq75midJNZofaA14VSxH-IO9JZZc3IVAuSjeYkzhFZEI5rQsdMTUb9m1qOQR2MXusTVRyVZMlk7nK0-y7ohWyzx-gYKNJqUUunc26AJ-WEn-UAC0KYSRUBzkv6LubuIkXjujv0OgLH3mdT-W8QQpwVInNCecE1inh_oZ9IAs0DQCy8dEOQDA0eJRvgX_LntePbVs09EacWEScK1KPng"/>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-title-md text-title-md text-on-surface">V. Júnior</h3>
+<span class="font-label-caps text-[10px] text-championship-gold bg-championship-gold/10 px-2 py-0.5 rounded">STAR</span>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant mt-1">
+<img class="w-4 h-4 object-contain" data-alt="Real Madrid small badge, minimal, dark theme" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmmpXsH7qK0icjk00Rtp1xuxlJOHMphFMyAXKZ0HRQydQVPENWkmmH4pbMLQD8IH6NdkCgPv7WItVd1iKOoJpdSJn0gu90ZZ0a2FHOGFAnxwA2T-jTBvFdM2mVWpRunwHoEzRuV1CdOOWEC8z5c5yg6PFhZpSGRywo1f8U9TJ9-eA_2qQrosU9hJGbf-HZxKASLa5h1IL-4FHmkJWfv_wfK8M2qNiQDbwE7dvDuVQcyRdUIzqOKvzo"/>
+<span class="font-body-sm text-[12px] uppercase tracking-wider">FWD</span>
+<span class="font-body-sm text-[12px]">•</span>
+<span class="font-stats-mono text-[12px] text-primary">12.5 PTS</span>
+</div>
+</div>
+</div>
+<button class="bg-pitch-green/10 text-pitch-green hover:bg-pitch-green hover:text-surface-obsidian transition-colors font-label-caps text-label-caps px-4 py-3 rounded-lg shadow-inner">
+          SELECT
+        </button>
+</div>
+<!-- Player Card: Taken -->
+<div class="bg-surface-container-highest rounded-xl p-3 flex items-center justify-between opacity-60 grayscale relative overflow-hidden">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-obsidian relative">
+<img class="w-full h-full object-cover" data-alt="Headshot of Robert Lewandowski, dramatic stadium lighting, high contrast, dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZRAqOxUNcqt-mg7xy4sYd6IgrX-jPp3i_9zP3tqQVPujG_wWqsyDb6wMGOdjX9rUGBvIi754ghoRxaM5X_ZWrPm2A4_UndI_kyZuP-ToXL-vj3X08MtiO6rjurnzOM6FpeY79CftL7qNZ1LWnPVRkiD5WoVpAsNlFhB8F2hgtUVoShTH_VsfJGe1vqCcN8S6NbkQQdsfM1qzytez5AIE5DpYSenyVTa97XjUENMLhzgG7U-YcpOh5"/>
+<div class="absolute inset-0 bg-black/40 flex items-center justify-center backdrop-blur-[2px]">
+<span class="material-symbols-outlined text-white/80">lock</span>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-title-md text-title-md text-on-surface line-through decoration-on-surface-variant/50">Lewandowski</h3>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant mt-1">
+<img class="w-4 h-4 object-contain" data-alt="Barcelona small badge, minimal, dark theme" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfYYj0R5Qt0v5ri-kozVayTxdeIBk1DAzX5FpfDd8vwJiQun90n5G45MQ-9U0k3Fz7Orv2x0podrObzHTlPkY5O9QALsimsb-owNzZ7NGQalnttLQSPmriqj5K8iNmJ6xc09mRZduW2KTrpZ-RPnyRIO8xh3wCwRx2tvRGibPSk3w6hFfm_dcxJ2SKRUfQ2Om9L2abGfmTEGnPJw7nmYqlk7L3qTPd8uBmLzZkGyFIWYTx4nFlmDKq"/>
+<span class="font-body-sm text-[12px] uppercase tracking-wider">FWD</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-obsidian text-on-surface-variant font-label-caps text-label-caps px-4 py-3 rounded-lg flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">close</span>
+          TAKEN
+        </div>
+</div>
+<!-- Player Card: Available -->
+<div class="bg-surface-charcoal rounded-xl p-3 flex items-center justify-between shadow-sm relative overflow-hidden group">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-obsidian relative">
+<img class="w-full h-full object-cover" data-alt="Headshot of Rodrygo, dramatic stadium lighting, high contrast, dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeCFQiyvdL5l8tJExqGtFKjxRgOsPLXv09ryhzB2RUkglmPt2TQf7GWyxtfOEjHr6DQa_wIJRN5mozjl185QB9hrYiop_CRF6VRgcGNW0KLa9WuTjq1j0UldttV9Ki-Fo5JUE1n5Srf4RyCn1k5caGi1J3OjUG7GMjw8jBGn-6d_nVq1ue_-yvaKfhqhFoTtTTfguXmYm6L55HRPR3A36I7GQwZQelSp42kWxaBjtlgPvsWjfdh9aT"/>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-title-md text-title-md text-on-surface">Rodrygo</h3>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant mt-1">
+<img class="w-4 h-4 object-contain" data-alt="Real Madrid small badge, minimal, dark theme" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-B9rgW0ZR3i6xtu-20Wxy920Hy9GGXmJeNJUOkxq3YJEApdtmRIE5zqhKfvfv2KpjhrHX3zbcxTYJ09LuXhGvh9ApiPl1AgOCT9hA2PUezuIdhOszP67Bb2xdgmBCykCJumhccjmaXhxCfS41xee_w0pQpGEYVEM5YTwv3ixNXIcvn7GLf0EejQ5ph4U5tW2UR6EQhxc3cCE03vF63QqecK1oSZvi6c_gSu3h307_OJdoy5Sknyuk"/>
+<span class="font-body-sm text-[12px] uppercase tracking-wider">FWD</span>
+<span class="font-body-sm text-[12px]">•</span>
+<span class="font-stats-mono text-[12px] text-primary">8.2 PTS</span>
+</div>
+</div>
+</div>
+<button class="bg-surface-variant text-on-surface hover:bg-pitch-green hover:text-surface-obsidian transition-colors font-label-caps text-label-caps px-4 py-3 rounded-lg shadow-inner">
+          SELECT
+        </button>
+</div>
+<!-- Player Card: Available -->
+<div class="bg-surface-charcoal rounded-xl p-3 flex items-center justify-between shadow-sm relative overflow-hidden group">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-surface-obsidian relative">
+<img class="w-full h-full object-cover" data-alt="Headshot of Raphinha, dramatic stadium lighting, high contrast, dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCh5naYnvvOqAQtu5hFqCAqY3bSWNjvfG6btSlolP3MeaD4kvrpEMZ7NHR_caL0xec6QQJehZidzVNOQiLzUCO1Byec-nG5Kg1atkwwNavdAt0LomqudrDnWo3EkvML0TzB01FmM_RO_uAz9n0tTpFMjOf8mh-BbjkCvTTePMBMpOTWHzpGmxWi43AaoWTFcqstFgxXoKpuFUX1cpq5QDLRyiJE6unzKk-0y8F8ZcbsSwZK5bSAVv9B"/>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-title-md text-title-md text-on-surface">Raphinha</h3>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant mt-1">
+<img class="w-4 h-4 object-contain" data-alt="Barcelona small badge, minimal, dark theme" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9RDzY4XP6dZhj0aIltWbI90dHU9xaXNFgha3rZQGb1sE1ZKvOU-XujbnFcTR-IdNc3XzBQSoRWrvAzxsy2RCEyOluT7t2mZck0nvQ_TkXyihs_zJKTLDJhYdblCcTO9IEWCnvj8JyHFLyHnGwgg3U3HTpWNvnf8eIiQ8JnnKb4FTHRSgP4PKQdqRnFmVUisIwxspdiAYKz4Ai3JvhWVrwZHWVmnCAV6NO7KbHS-CcrilGM-ww1JmV"/>
+<span class="font-body-sm text-[12px] uppercase tracking-wider">FWD</span>
+<span class="font-body-sm text-[12px]">•</span>
+<span class="font-stats-mono text-[12px] text-primary">9.1 PTS</span>
+</div>
+</div>
+</div>
+<button class="bg-surface-variant text-on-surface hover:bg-pitch-green hover:text-surface-obsidian transition-colors font-label-caps text-label-caps px-4 py-3 rounded-lg shadow-inner">
+          SELECT
+        </button>
+</div>
+</div>
+</section>
+<!-- Bottom Draft Order HUD -->
+<div class="fixed bottom-0 left-0 right-0 p-margin-mobile bg-gradient-to-t from-surface-obsidian via-surface-obsidian/90 to-transparent pb-[calc(env(safe-area-inset-bottom)+16px)] z-40 pointer-events-none">
+<div class="pointer-events-auto bg-glass-overlay glass rounded-2xl p-3 shadow-[0_-5px_20px_rgba(0,0,0,0.5)] border-t border-white/10">
+<div class="flex items-center justify-between mb-2 px-1">
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-widest">Draft Order</span>
+<span class="font-label-caps text-[10px] text-pitch-green uppercase animate-pulse flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-pitch-green"></span> Snake Draft Active
+        </span>
+</div>
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar snap-x">
+<!-- R1: Completed -->
+<div class="flex-none w-14 h-14 rounded-xl bg-surface-charcoal border-l-2 border-surface-variant flex flex-col items-center justify-center relative opacity-50">
+<span class="absolute top-1 left-1 text-[8px] font-stats-mono text-on-surface-variant">R1.1</span>
+<img class="w-6 h-6 rounded-full object-cover" data-alt="User avatar 1, dark theme, minimal" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDN0neIo8P3wmQhxliQtA2aa3ApMeQTn5HRR4J0Ow7pTkVdzR0oyQNr-B3H08oeBxv56qSeoLo-IAeIkLMm75YgnZDov0lFj7yJXdfTP2Y-ZL0Yfa4hvB-Mca00_aDPuRIB_IhwaPm8G_2MHSKmk9pfhH5Nfkz4IDNBTkRdn3_LjRjuPcsIBE5l_y6rkD_HjtZsDVIhphjtRYSR51eHj-oc_Dba8hyxoD_P_yIGa-Y8epqB6teq2EwA"/>
+<span class="material-symbols-outlined text-[14px] text-championship-gold absolute -bottom-1 -right-1 bg-surface-charcoal rounded-full">check_circle</span>
+</div>
+<!-- R1: Completed -->
+<div class="flex-none w-14 h-14 rounded-xl bg-surface-charcoal border-l-2 border-surface-variant flex flex-col items-center justify-center relative opacity-50">
+<span class="absolute top-1 left-1 text-[8px] font-stats-mono text-on-surface-variant">R1.2</span>
+<img class="w-6 h-6 rounded-full object-cover" data-alt="User avatar 2, dark theme, minimal" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU0K9VaNKLWMxJgej8Acd6J4_QxvgEecNOXj2uKAwAMdl7I81RSQgOwfvtUwZOMfKazTBzgocJ-wx8k-evRpsbOKCMgsYq0NbGYPrfPMtx-0O879VpJ_1o-fkg-qO_xlPhNzU3KmrFK86nf5TkZUqxZO27k4rcQqpbdu2RkxWXjeK36deN36I7pT7R-z8PZMvnLcwkRHcoeRw00n0zFtPkm13Ri7U0fB_TTDUjGDICj0pIaZ7-bYBI"/>
+<span class="material-symbols-outlined text-[14px] text-championship-gold absolute -bottom-1 -right-1 bg-surface-charcoal rounded-full">check_circle</span>
+</div>
+<!-- R1: Active Turn -->
+<div class="flex-none w-16 h-16 rounded-xl bg-surface-container-high border border-pitch-green shadow-[0_0_15px_rgba(0,255,65,0.2)] flex flex-col items-center justify-center relative snap-start">
+<div class="absolute inset-0 rounded-xl border border-pitch-green animate-ping opacity-20"></div>
+<span class="absolute top-1 left-1 text-[9px] font-stats-mono text-pitch-green">R1.3</span>
+<img class="w-8 h-8 rounded-full object-cover border-2 border-pitch-green" data-alt="Your User avatar, bright confident lighting, dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuZfgLdLZTACW7U9y2sc7l-0pk3389Wli0Hy7JD1q8L7ulfDVKMJLbriSrtELqaJZoBehFf-NP1rcFXMfHZRMvdkYvu4MyZmKApYynk9Toounq-YkxYDDoaQkBAYguHV0FzoZD-jpKuGiH078QlV0jcbH-athYbs36uOxHLiihmX9zZ8HPH_OlnPUfmOGEhoC4st07MzuYlZ1J58-1hFENJ7kPsa7FRD5OaGxsE3-aUmosL8pGkjPN"/>
+<span class="font-label-caps text-[8px] text-pitch-green mt-1 bg-surface-obsidian px-1.5 rounded-sm">YOU</span>
+</div>
+<!-- R1: Upcoming -->
+<div class="flex-none w-14 h-14 rounded-xl bg-surface-charcoal border-l-2 border-surface-variant flex flex-col items-center justify-center relative opacity-80">
+<span class="absolute top-1 left-1 text-[8px] font-stats-mono text-on-surface-variant">R1.4</span>
+<img class="w-6 h-6 rounded-full object-cover grayscale" data-alt="User avatar 4, dark theme, minimal" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmpzJHmAXaf9xfwvr9X72HDImSvPSwuAIk5JFRd-5tMoyr946Q9X0T6NkEGhf5TvkwU8er15KA-v5jM9e8fYm5G5ZdaYY0zDkPjSg2RJmMhvMZy1NZ7rWcZkHKPctqSDjF2VDDSBvpTgZKyj4JajqATM-v0nUoG_xYqefkmTJ53Lj-fciOC2KcucPisKP-p-fVB56fKDfF6AZfxW0eqEXtL63EEVPRvIjFMKyshtQyNbj8k-WePRYa"/>
+</div>
+<!-- Divider for Snake Draft turn -->
+<div class="flex-none flex items-center justify-center px-1">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px] rotate-90">u_turn_right</span>
+</div>
+<!-- R2: Upcoming (Snake reversed order) -->
+<div class="flex-none w-14 h-14 rounded-xl bg-surface-charcoal border-l-2 border-surface-variant flex flex-col items-center justify-center relative opacity-40">
+<span class="absolute top-1 left-1 text-[8px] font-stats-mono text-on-surface-variant">R2.1</span>
+<img class="w-6 h-6 rounded-full object-cover grayscale" data-alt="User avatar 4, dark theme, minimal" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDavIad3Mn4bKq54dYbLCVrxj-6WLQS7hkXa2gTOZy4h4r2Azmy6_jO5CBWs0uxGAl5L6YLG_CcWnq7pN_wiHFZAGUo_sgvKgrPpSVLL7ktlC20cm7iDxfDQJe8stFLeyBDvNN4l2JhetSP_Lafs-t3JsrTqBE5y4e_XFl3KOfTRUAbcLt-hOncPgqVhlV1kbto3WNuGlu04_dwaZ6C8vPAJqjd9lJpnJDmQmc_dm4w1qO1f5eIoYNG"/>
+</div>
+</div>
+</div>
+</div>
+<style>
+    /* Hide scrollbar for clean horizontal scrolling */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+  </style>
+<script>
+    // Simple visual countdown logic for demo purposes
+    document.addEventListener('DOMContentLoaded', () => {
+      const timerElement = document.getElementById('draft-timer');
+      if(timerElement) {
+        let timeLeft = 35;
+        setInterval(() => {
+          timeLeft--;
+          if (timeLeft < 0) timeLeft = 35; // Loop for demo
+          
+          timerElement.textContent = timeLeft;
+          
+          // Color change on low time
+          if(timeLeft <= 10) {
+            timerElement.classList.remove('text-pitch-green', 'drop-shadow-[0_0_15px_rgba(0,255,65,0.3)]');
+            timerElement.classList.add('text-status-red', 'drop-shadow-[0_0_15px_rgba(255,59,48,0.3)]');
+          } else if (timeLeft === 35) {
+             timerElement.classList.add('text-pitch-green', 'drop-shadow-[0_0_15px_rgba(0,255,65,0.3)]');
+             timerElement.classList.remove('text-status-red', 'drop-shadow-[0_0_15px_rgba(255,59,48,0.3)]');
+          }
+        }, 1000);
+      }
+    });
+  </script>
+</div></main></body></html>

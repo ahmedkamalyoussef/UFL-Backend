@@ -1,0 +1,405 @@
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-surface": "#e5e2e1", "on-tertiary-container": "#005dc5", "primary": "#ebffe2", "surface-container-lowest": "#0e0e0e", "surface-container-high": "#2a2a2a", "secondary": "#fff9ef", "on-primary-fixed": "#002203", "secondary-container": "#ffdb3c", "error": "#ffb4ab", "on-secondary": "#3a3000", "on-tertiary": "#002e69", "championship-gold": "#FFD700", "on-secondary-container": "#725f00", "primary-fixed-dim": "#00e639", "glass-overlay": "rgba(255, 255, 255, 0.1)", "surface-obsidian": "#000000", "primary-fixed": "#72ff70", "tertiary-container": "#cedcff", "on-primary-container": "#007117", "pitch-green": "#00FF41", "inverse-primary": "#006e16", "on-primary-fixed-variant": "#00530e", "surface-variant": "#353534", "tertiary-fixed": "#d8e2ff", "tertiary": "#f9f8ff", "on-secondary-fixed": "#221b00", "on-secondary-fixed-variant": "#544600", "surface-container-low": "#1c1b1b", "on-error": "#690005", "surface-charcoal": "#1C1C1E", "inverse-on-surface": "#313030", "tertiary-fixed-dim": "#adc6ff", "outline": "#84967e", "secondary-fixed": "#ffe16d", "status-red": "#FF3B30", "on-background": "#e5e2e1", "surface-container": "#201f1f", "on-tertiary-fixed-variant": "#004493", "primary-container": "#00ff41", "outline-variant": "#3b4b37", "on-primary": "#003907", "surface": "#131313", "on-tertiary-fixed": "#001a41", "surface-dim": "#131313", "on-error-container": "#ffdad6", "surface-tint": "#00e639", "background": "#131313", "surface-bright": "#393939", "surface-container-highest": "#353534", "error-container": "#93000a", "inverse-surface": "#e5e2e1", "secondary-fixed-dim": "#e9c400", "on-surface-variant": "#b9ccb2" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "gutter": "12px", "stack-tight": "4px", "base": "8px", "margin-mobile": "16px", "stack-loose": "20px", "margin-desktop": "24px" }, "fontFamily": { "stats-mono": ["Inter"], "body-lg": ["Inter"], "title-md": ["Inter"], "display-hero": ["Inter"], "body-sm": ["Inter"], "label-caps": ["Inter"], "headline-lg": ["Inter"], "headline-lg-mobile": ["Inter"] }, "fontSize": { "stats-mono": ["18px", { "lineHeight": "22px", "fontWeight": "700" }], "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "500" }], "title-md": ["20px", { "lineHeight": "26px", "fontWeight": "700" }], "display-hero": ["48px", { "lineHeight": "48px", "letterSpacing": "-0.04em", "fontWeight": "900" }], "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "label-caps": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }], "headline-lg": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "800" }], "headline-lg-mobile": ["24px", { "lineHeight": "28px", "fontWeight": "800" }] } } } };</script><style>@layer base { body { @apply bg-surface text-on-surface; -webkit-tap-highlight-color: transparent; } .pb-safe { padding-bottom: env(safe-area-inset-bottom); } .pt-safe { padding-top: env(safe-area-inset-top); } } .glass { backdrop-filter: blur(20px); background: rgba(19, 19, 19, 0.8); }</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head><body class="font-body-lg text-body-lg"><header class="fixed top-0 w-full z-50 glass pt-safe shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-margin-mobile flex items-center gap-gutter"><button class="w-10 h-10 flex items-center justify-center rounded-full active:bg-white/10 transition-colors" onclick="history.back()"><span class="material-symbols-outlined text-on-surface">arrow_back_ios_new</span></button><div class="flex items-center gap-base overflow-hidden"><img alt="UFL Brand Logo" class="h-6 w-auto object-contain shrink-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHZuHB8GtcUc6ZJSFBTMnmPc3daURmnOeOad6Fq0ZRITufrDlfNTGWvvjNa3Pr9X-SmqL6aAexvgcWw8Dm7XkfjSDtAGlqRh-XYFmzXgSafBFCmmikqNa4Fm0K0iHu02OWFpsv2foIGk-J96rRCV8dFdZfQy0y7kOdF5ihyl6ZvJnOLPbyTsYJi7oYH_0FMr0gPF2KlFEp2eOlpPrlQVDa1qpRt0obcb9XSJrM7hqcErmBEjBhaVdG"/><h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface truncate tracking-tight uppercase">Match Details</h1></div></div></header><main class="relative w-full pt-16 bg-surface min-h-screen"><div class="flex flex-col w-full pb-safe">
+<!-- Live Scoreboard Header -->
+<section class="w-full relative rounded-b-xl overflow-hidden shadow-md">
+<div class="absolute inset-0 bg-cover bg-center opacity-40 z-0" data-alt="Wide stadium view at night during a major football match. Bright floodlights cutting through light mist, illuminating the vibrant green pitch. The stands are packed with cheering fans, creating a blurred mosaic of team colors in the background. High contrast, cinematic eSports aesthetic, deep blacks with neon pitch green and bright white stadium lights." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBBr2ulPjPYao53cM421AD94yaDc8ETyLu4frOlKCzCubCKj_tDXU2m6vKgOCx3Z9SfxjjFfc8NKxcN-vPmBGJFStgVHtv9pTznKZ2xLGPd0501Vh19di1aSPQfza2tUbB1DgoDDx2Z2e3yYLEptiKA4unTwTrD5802ic595PgPE1FygCyyjJyrF4DMAuevojf8D6dyrwJdGR33GOmSvvWc_P3hqzomhKfhIpooYcNJd6bp_AxlS7_G')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-obsidian via-surface-obsidian/70 to-surface-obsidian/20 z-10"></div>
+<div class="relative z-20 p-margin-mobile flex flex-col items-center justify-center pt-8 pb-10">
+<!-- Match Status Badge -->
+<div class="mb-6 flex items-center justify-center">
+<div class="bg-pitch-green text-surface-obsidian px-3 py-1 rounded flex items-center gap-2 shadow-[0_0_15px_rgba(0,255,65,0.4)] relative">
+<div class="absolute inset-0 rounded bg-pitch-green animate-ping opacity-50"></div>
+<span class="w-2 h-2 rounded-full bg-surface-obsidian animate-pulse"></span>
+<span class="font-label-caps text-label-caps tracking-widest">67' LIVE</span>
+</div>
+</div>
+<!-- Teams & Score -->
+<div class="flex w-full items-center justify-between max-w-[320px] mx-auto">
+<!-- Home Team -->
+<div class="flex flex-col items-center gap-2 flex-1">
+<div class="w-16 h-16 rounded-full bg-surface-charcoal/80 glass flex items-center justify-center p-2 shadow-sm ring-1 ring-white/10 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-[#004D98]/30 to-[#A50044]/30 z-0"></div>
+<img class="w-full h-full object-contain relative z-10" data-alt="FC Barcelona official club crest logo, high resolution, clean vector style, centered on transparent background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOGNlusVK5i0iL2JtpaLA_EIDYcj15WKQoTcZbpcLXdRNNIz8ak-5Ei5FvgLVx_ibxhaUybwdjZS9ls5KlKDmVQF0G3_pUr21XCN4ZqACToi8runbFP1n2i_00HfBwsjgrsSEprNbM69HM_GIkcaJHL0c4wsZCP-viHw4IdMcyS-b6AZyC8a7_YAScsvyzhivWJyA_8Z6htJ3ge6cAm9yoF2z896HXyjreXIOHM1-5i-3RxCoJ7Czu"/>
+</div>
+<span class="font-stats-mono text-[20px] leading-tight font-bold text-on-surface truncate">BAR</span>
+</div>
+<!-- Score -->
+<div class="flex-1 flex flex-col items-center justify-center shrink-0">
+<div class="flex items-center gap-3">
+<span class="font-display-hero text-display-hero text-on-surface drop-shadow-[0_2px_10px_rgba(255,255,255,0.1)]">2</span>
+<span class="font-title-md text-title-md text-on-surface/50">-</span>
+<span class="font-display-hero text-display-hero text-on-surface drop-shadow-[0_2px_10px_rgba(255,255,255,0.1)]">1</span>
+</div>
+</div>
+<!-- Away Team -->
+<div class="flex flex-col items-center gap-2 flex-1">
+<div class="w-16 h-16 rounded-full bg-surface-charcoal/80 glass flex items-center justify-center p-2 shadow-sm ring-1 ring-white/10 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent z-0"></div>
+<img class="w-full h-full object-contain relative z-10" data-alt="Real Madrid official club crest logo, high resolution, clean vector style, centered on transparent background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2qWTTSo50x98lDBNuzDhzszUuBidM9_5OUw1KANgdYLfSn_gepjFxcKbY55PFLlcbDmMpB9sOFDRa-eaMGfITvlFfdLjyEHca_fF_RePl2eKanjB7XtNYDhStjstQqmmlu5MUTB9F43IBm-AzPDHJEeLklusk7TRHwsxTYHHrj44Zy-9BkPyilb2v-Q-ABiTIN2JCseFTXiWMjUAA4z03RFG0a0upD6hBUdvZDQ7CrTQB6e3qEAOJ"/>
+</div>
+<span class="font-stats-mono text-[20px] leading-tight font-bold text-on-surface truncate">RMA</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Tab Navigation -->
+<div class="flex w-full px-margin-mobile mt-4 mb-2">
+<div class="flex w-full bg-surface-container rounded-lg p-1 gap-1">
+<button class="flex-1 py-2 text-center rounded-md font-body-sm text-[14px] font-semibold transition-colors bg-pitch-green/20 text-pitch-green shadow-sm ring-1 ring-pitch-green/40" id="tab-feed" onclick="switchTab('feed')">Feed</button>
+<button class="flex-1 py-2 text-center rounded-md font-body-sm text-[14px] font-semibold text-on-surface-variant hover:text-on-surface transition-colors" id="tab-leaderboard" onclick="switchTab('leaderboard')">Leaderboard</button>
+</div>
+</div>
+<div class="flex flex-col gap-gutter mt-2">
+<!-- FEED SECTION -->
+<div class="flex flex-col gap-gutter" id="section-feed">
+<!-- My Roster Performance -->
+<section class="px-margin-mobile">
+<div class="flex items-end justify-between mb-3">
+<h2 class="font-title-md text-title-md text-on-surface">Your Players</h2>
+<div class="flex flex-col items-end">
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase">Total Points</span>
+<span class="font-stats-mono text-[22px] leading-none text-pitch-green drop-shadow-[0_0_8px_rgba(0,255,65,0.3)]">120</span>
+</div>
+</div>
+<div class="flex gap-base overflow-x-auto pb-4 snap-x hide-scrollbar" style="scrollbar-width: none; -ms-overflow-style: none;">
+<!-- Player Card 1 -->
+<div class="snap-start w-[200px] shrink-0 bg-surface-charcoal rounded-xl relative overflow-hidden shadow-md flex flex-col ring-1 ring-white/5 relative z-0 before:absolute before:inset-0 before:bg-gradient-to-t before:from-pitch-green/10 before:to-transparent before:z-[-1]">
+<div class="h-[120px] w-full relative">
+<div class="absolute inset-x-0 bottom-0 h-[140px] bg-contain bg-bottom bg-no-repeat z-10" data-alt="Dynamic portrait of Mohamed Salah in a football kit, looking focused and energetic. Shot from a low angle with stadium lights in the background. High contrast, sharp details, isolated on a dark background." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBb0eVZGil-tRzbF_HtcdKVNbCjYfVxaKVaPbwHpB5S4OcwXdKVz6ZYBkphI6HjP18Nf7vpl_J72NBw5ZzTdd3XGz1hrjoyoBlhaF5ncUycIVsBIyGVftrTh-9mWms3YQHy584-Qae2IcoLAMApI59xMkW-oWFNS2P4IM1lTC2usyW5Tfh8kNoa2M2Sc6j2J4V9QB5ua2Wi9xmPxfMy9bcKWPMGmA3D-nYTP_xO8WMSnDwTWGo25jv-')"></div>
+<div class="absolute top-2 left-2 z-20 bg-surface-obsidian/60 glass px-2 py-1 rounded text-center">
+<span class="block font-stats-mono text-[12px] text-on-surface leading-none mb-0.5">LIV</span>
+<span class="block font-label-caps text-[9px] text-pitch-green">FWD</span>
+</div>
+<div class="absolute top-2 right-2 z-20 w-6 h-6 rounded-full bg-pitch-green/20 border border-pitch-green flex items-center justify-center shadow-[0_0_8px_rgba(0,255,65,0.2)]">
+<span class="material-symbols-outlined text-[14px] text-pitch-green" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<div class="p-3 bg-surface-obsidian/80 backdrop-blur-md border-t border-white/10 z-20 flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-stats-mono text-[16px] text-on-surface truncate">M. Salah</h3>
+<p class="font-body-sm text-[12px] text-on-surface-variant flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-pitch-green inline-block"></span> Playing</p>
+</div>
+<div class="mt-2 flex justify-between items-center bg-surface-charcoal/50 rounded p-1.5 ring-1 ring-white/5">
+<span class="font-label-caps text-[10px] text-on-surface/60">PTS</span>
+<span class="font-stats-mono text-[18px] text-pitch-green">+78</span>
+</div>
+</div>
+</div>
+<!-- Player Card 2 -->
+<div class="snap-start w-[200px] shrink-0 bg-surface-charcoal rounded-xl relative overflow-hidden shadow-md flex flex-col ring-1 ring-white/5 relative z-0">
+<div class="h-[120px] w-full relative">
+<div class="absolute inset-x-0 bottom-0 h-[140px] bg-contain bg-bottom bg-no-repeat z-10" data-alt="Dynamic portrait of Kevin De Bruyne in a football kit, looking scanning the field. Shot from a medium angle with blurred stadium background. High contrast, sharp details, isolated on a dark background." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAeUTphy_dDG4c6I91s6OfRz2t27zwSicmiXiW3Apmtq_OY78fqfzidR5_TWsnI6IXhtD8saERMDfEiwFvY9o2yk_mdEsqJVH8PJPi1ONS7-BXUqv3EDrOgiMuNFEP7xqU6L52_wzhZXj1Q7AN_7tlMq-9gsJf7LiepqgnZX-cxpx-gT2bkWidp7tf8RTvUQO6qo1ZZBPj_Lk7P1qfKHkgVEqC4WUSgh3SKTe01qV1XknWz1XwWQ-V0')"></div>
+<div class="absolute top-2 left-2 z-20 bg-surface-obsidian/60 glass px-2 py-1 rounded text-center">
+<span class="block font-stats-mono text-[12px] text-on-surface leading-none mb-0.5">MCI</span>
+<span class="block font-label-caps text-[9px] text-[#A6A6A6]">MID</span>
+</div>
+<div class="absolute top-2 right-2 z-20 w-6 h-6 rounded-full bg-white/5 border border-white/20 flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant"></span>
+</div>
+</div>
+<div class="p-3 bg-surface-obsidian/80 backdrop-blur-md border-t border-white/10 z-20 flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-stats-mono text-[16px] text-on-surface truncate">K. De Bruyne</h3>
+<p class="font-body-sm text-[12px] text-on-surface-variant flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-[#A6A6A6] inline-block"></span> Bench</p>
+</div>
+<div class="mt-2 flex justify-between items-center bg-surface-charcoal/50 rounded p-1.5 ring-1 ring-white/5">
+<span class="font-label-caps text-[10px] text-on-surface/60">PTS</span>
+<span class="font-stats-mono text-[18px] text-on-surface">+42</span>
+</div>
+</div>
+</div>
+<!-- Player Card Empty Slot -->
+<div class="snap-start w-[140px] shrink-0 bg-surface-charcoal/30 rounded-xl shadow-inner flex flex-col items-center justify-center border border-dashed border-white/20 p-4">
+<div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mb-2">
+<span class="material-symbols-outlined text-on-surface/40">add</span>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface/40 text-center">Draft<br/>Player</span>
+</div>
+</div>
+</section>
+<!-- Live Event Feed -->
+<section class="flex-1 px-margin-mobile flex flex-col relative z-10 pb-4">
+<div class="sticky top-[108px] z-30 bg-surface/90 backdrop-blur-md py-3 flex items-center gap-3">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface m-0 p-0">Play-by-Play</h2>
+<div class="h-[1px] flex-1 bg-gradient-to-r from-white/10 to-transparent"></div>
+<button class="bg-surface-charcoal rounded-full p-2 ring-1 ring-white/10 active:scale-95 transition-transform flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface/70 text-[20px]">filter_list</span>
+</button>
+</div>
+<div class="flex flex-col gap-3 relative mt-2" id="live-feed-container">
+<!-- Timeline Line -->
+<div class="absolute left-[20px] top-4 bottom-0 w-[2px] bg-white/5 z-0"></div>
+<!-- Event 1 (Newest/Highlight) -->
+<div class="relative z-10 flex gap-4 w-full opacity-0 translate-y-4 animate-[slideUp_0.4s_ease-out_forwards]">
+<!-- Node -->
+<div class="w-[42px] shrink-0 flex flex-col items-center pt-1">
+<div class="w-10 h-10 rounded-full bg-pitch-green/20 border-2 border-pitch-green flex items-center justify-center shadow-[0_0_12px_rgba(0,255,65,0.4)] relative">
+<span class="material-symbols-outlined text-pitch-green text-[20px]" style="font-variation-settings: 'FILL' 1;">sports_soccer</span>
+<div class="absolute inset-0 rounded-full border border-pitch-green animate-ping opacity-60"></div>
+</div>
+<span class="font-stats-mono text-[12px] text-on-surface mt-1">67'</span>
+</div>
+<!-- Content Card -->
+<div class="flex-1 bg-surface-charcoal rounded-lg p-3 shadow-md ring-1 ring-pitch-green/40 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-pitch-green/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-caps text-[12px] text-pitch-green font-bold tracking-wider">GOAL!</span>
+<div class="bg-pitch-green text-surface-obsidian font-stats-mono text-[14px] px-2 py-0.5 rounded shadow-sm">
+                         +40
+                     </div>
+</div>
+<h4 class="font-body-lg text-body-lg text-on-surface font-bold">Mohamed Salah</h4>
+<p class="font-body-sm text-[14px] text-on-surface-variant mt-1 leading-snug">
+                     Incredible strike from outside the box! Assisted by Alexander-Arnold.
+                 </p>
+<div class="mt-2 pt-2 border-t border-white/5 flex gap-2">
+<span class="inline-flex items-center gap-1 font-stats-mono text-[10px] text-on-surface/50 bg-surface-obsidian/50 px-1.5 py-0.5 rounded"><span class="w-1 h-1 rounded-full bg-championship-gold"></span> MY ROSTER</span>
+</div>
+</div>
+</div>
+<!-- Event 2 -->
+<div class="relative z-10 flex gap-4 w-full opacity-0 translate-y-4 animate-[slideUp_0.4s_ease-out_0.1s_forwards]">
+<div class="w-[42px] shrink-0 flex flex-col items-center pt-1">
+<div class="w-10 h-10 rounded-full bg-surface-obsidian border border-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]" style="font-variation-settings: 'FILL' 1;">handshake</span>
+</div>
+<span class="font-stats-mono text-[12px] text-on-surface/60 mt-1">65'</span>
+</div>
+<div class="flex-1 bg-surface-obsidian rounded-lg p-3 ring-1 ring-white/5">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-caps text-[11px] text-[#A6A6A6] tracking-wider">ASSIST</span>
+<div class="text-on-surface font-stats-mono text-[14px]">
+                         +20
+                     </div>
+</div>
+<h4 class="font-body-sm text-[15px] text-on-surface font-semibold">Kevin De Bruyne</h4>
+<p class="font-body-sm text-[13px] text-on-surface-variant mt-1">
+                     Perfect through ball splits the defense.
+                 </p>
+</div>
+</div>
+<!-- Event 3 -->
+<div class="relative z-10 flex gap-4 w-full opacity-0 translate-y-4 animate-[slideUp_0.4s_ease-out_0.2s_forwards]">
+<div class="w-[42px] shrink-0 flex flex-col items-center pt-1">
+<div class="w-10 h-10 rounded-full bg-surface-obsidian border border-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface/40 text-[18px]">front_hand</span>
+</div>
+<span class="font-stats-mono text-[12px] text-on-surface/40 mt-1">58'</span>
+</div>
+<div class="flex-1 bg-surface-obsidian/50 rounded-lg p-3 ring-1 ring-white/5 opacity-80">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-caps text-[11px] text-[#A6A6A6] tracking-wider">TACKLE</span>
+<div class="text-on-surface/70 font-stats-mono text-[14px]">
+                         +3
+                     </div>
+</div>
+<h4 class="font-body-sm text-[14px] text-on-surface/90">Virgil Van Dijk</h4>
+<p class="font-body-sm text-[12px] text-on-surface-variant/70 mt-1">
+                     Clean sliding tackle to dispossess Vinícius Jr.
+                 </p>
+</div>
+</div>
+<!-- Event 4 (Opponent/No points) -->
+<div class="relative z-10 flex gap-4 w-full opacity-0 translate-y-4 animate-[slideUp_0.4s_ease-out_0.3s_forwards]">
+<div class="w-[42px] shrink-0 flex flex-col items-center pt-1">
+<div class="w-8 h-8 rounded-full bg-surface-obsidian border border-status-red/30 flex items-center justify-center mt-1">
+<span class="material-symbols-outlined text-status-red/70 text-[16px]">sports_martial_arts</span>
+</div>
+<span class="font-stats-mono text-[11px] text-on-surface/40 mt-1">52'</span>
+</div>
+<div class="flex-1 bg-transparent py-2 border-l-2 border-status-red/30 pl-3 ml-1 mt-1 opacity-60">
+<div class="flex justify-between items-center">
+<div>
+<span class="font-label-caps text-[10px] text-status-red/80 tracking-wider block">FOUL</span>
+<span class="font-body-sm text-[13px] text-on-surface">E. Camavinga</span>
+</div>
+<span class="font-stats-mono text-[12px] text-status-red/80">-1</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Loading indicator for older events -->
+<div class="mt-6 flex justify-center pb-6">
+<div class="w-6 h-6 border-2 border-white/20 border-t-white/60 rounded-full animate-spin"></div>
+</div>
+</section>
+</div>
+<!-- LEADERBOARD SECTION -->
+<div class="hidden flex-col w-full px-margin-mobile relative z-10 pb-4" id="section-leaderboard">
+<div class="flex flex-col w-full bg-surface-charcoal/85 backdrop-blur-[20px] rounded-xl shadow-2xl overflow-hidden relative z-10 p-base gap-base mt-2">
+<!-- Header -->
+<div class="flex items-center justify-between px-base py-stack-tight">
+<div class="flex items-center gap-2 text-on-surface-variant font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-[16px]">leaderboard</span>
+<span>Live Ranking</span>
+</div>
+<div class="flex items-center gap-1.5 bg-surface-obsidian px-2 py-1 rounded-full shadow-inner">
+<div class="w-2 h-2 rounded-full bg-status-red animate-pulse"></div>
+<span class="font-label-caps text-[10px] text-status-red tracking-wider">LIVE</span>
+</div>
+</div>
+<!-- Leaderboard List -->
+<div class="flex flex-col w-full gap-stack-tight">
+<!-- 1st Place -->
+<div class="flex items-center justify-between w-full p-3 rounded-lg bg-surface-container shadow-sm">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center w-8 font-stats-mono text-stats-mono text-championship-gold">
+            1
+          </div>
+<div class="flex flex-col">
+<span class="font-body-lg text-body-lg text-on-surface">Alex_Striker</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant">420.5 pts</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="font-stats-mono text-[16px] text-championship-gold">2,450</span>
+<div class="flex items-center text-pitch-green gap-0.5">
+<svg aria-hidden="true" class="w-3 h-3 fill-current" viewbox="0 0 24 24"><path d="M7 14l5-5 5 5H7z"></path></svg>
+<span class="font-stats-mono text-[10px]">+12</span>
+</div>
+</div>
+</div>
+<!-- 2nd Place (YOU - Active Highlight) -->
+<div class="flex items-center justify-between w-full p-3 rounded-lg bg-pitch-green shadow-[0_0_15px_rgba(0,255,65,0.2)] relative overflow-hidden transform scale-[1.02] transition-transform">
+<!-- Shine effect -->
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full animate-[shimmer_3s_infinite]"></div>
+<div class="flex items-center gap-3 relative z-10">
+<div class="flex items-center justify-center w-8 font-stats-mono text-stats-mono text-surface-obsidian opacity-90">
+            2
+          </div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-body-lg text-body-lg text-surface-obsidian font-bold">YOU</span>
+<span class="bg-surface-obsidian text-pitch-green font-label-caps text-[9px] px-1.5 py-0.5 rounded-sm">RISING</span>
+</div>
+<span class="font-body-sm text-[12px] text-surface-obsidian/80 font-medium">395.2 pts</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1 relative z-10">
+<span class="font-stats-mono text-[16px] text-surface-obsidian font-900">2,380</span>
+<div class="flex items-center text-surface-obsidian gap-0.5 font-bold">
+<svg aria-hidden="true" class="w-3 h-3 fill-current" viewbox="0 0 24 24"><path d="M7 14l5-5 5 5H7z"></path></svg>
+<span class="font-stats-mono text-[10px]">+45</span>
+</div>
+</div>
+</div>
+<!-- 3rd Place -->
+<div class="flex items-center justify-between w-full p-3 rounded-lg bg-surface-container shadow-sm">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center w-8 font-stats-mono text-stats-mono text-on-surface-variant">
+            3
+          </div>
+<div class="flex flex-col">
+<span class="font-body-lg text-body-lg text-on-surface">Mia_Playmaker</span>
+<span class="font-body-sm text-[12px] text-on-surface-variant">380.0 pts</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="font-stats-mono text-[16px] text-on-surface">2,210</span>
+<div class="flex items-center text-status-red gap-0.5">
+<svg aria-hidden="true" class="w-3 h-3 fill-current" viewbox="0 0 24 24"><path d="M7 10l5 5 5-5H7z"></path></svg>
+<span class="font-stats-mono text-[10px]">-8</span>
+</div>
+</div>
+</div>
+<!-- 4th Place -->
+<div class="flex items-center justify-between w-full p-3 rounded-lg bg-surface-container-low">
+<div class="flex items-center gap-3">
+<div class="flex items-center justify-center w-8 font-stats-mono text-[16px] text-surface-bright">
+            4
+          </div>
+<div class="flex flex-col">
+<span class="font-body-lg text-body-sm text-on-surface opacity-80">GhostRunner</span>
+<span class="font-body-sm text-[12px] text-surface-bright">342.8 pts</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="font-stats-mono text-[14px] text-on-surface opacity-80">2,050</span>
+<div class="flex items-center text-surface-bright gap-0.5">
+<span class="material-symbols-outlined text-[12px]">horizontal_rule</span>
+<span class="font-stats-mono text-[10px]">0</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<style>
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes shimmer {
+    100% { transform: translateX(100%); }
+  }
+  
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+</style>
+<script>
+  function switchTab(tabName) {
+    const feedSection = document.getElementById('section-feed');
+    const leaderboardSection = document.getElementById('section-leaderboard');
+    const tabFeed = document.getElementById('tab-feed');
+    const tabLeaderboard = document.getElementById('tab-leaderboard');
+
+    const activeClasses = ['bg-pitch-green/20', 'text-pitch-green', 'shadow-sm', 'ring-1', 'ring-pitch-green/40'];
+    const inactiveClasses = ['text-on-surface-variant', 'hover:text-on-surface'];
+
+    if (tabName === 'feed') {
+      feedSection.classList.remove('hidden');
+      feedSection.classList.add('flex');
+      leaderboardSection.classList.add('hidden');
+      leaderboardSection.classList.remove('flex');
+      
+      tabFeed.classList.add(...activeClasses);
+      tabFeed.classList.remove(...inactiveClasses);
+      
+      tabLeaderboard.classList.remove(...activeClasses);
+      tabLeaderboard.classList.add(...inactiveClasses);
+    } else {
+      leaderboardSection.classList.remove('hidden');
+      leaderboardSection.classList.add('flex');
+      feedSection.classList.add('hidden');
+      feedSection.classList.remove('flex');
+      
+      tabLeaderboard.classList.add(...activeClasses);
+      tabLeaderboard.classList.remove(...inactiveClasses);
+      
+      tabFeed.classList.remove(...activeClasses);
+      tabFeed.classList.add(...inactiveClasses);
+    }
+  }
+
+  // Simple micro-interaction for tapping event cards to show a brief highlight pulse
+  document.addEventListener('DOMContentLoaded', () => {
+    const eventCards = document.querySelectorAll('#live-feed-container > div.relative.z-10');
+    
+    eventCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Remove existing animation class if any
+            this.classList.remove('animate-[pulse_0.5s_ease-in-out]');
+            // Force reflow
+            void this.offsetWidth;
+            // Add animation class temporarily
+            this.classList.add('animate-[pulse_0.5s_ease-in-out]');
+        });
+    });
+  });
+</script></main></body></html>
