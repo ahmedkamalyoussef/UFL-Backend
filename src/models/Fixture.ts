@@ -1,7 +1,7 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/database';
 
-export type FixtureStatus = 'SCHEDULED' | 'LIVE' | 'HALFTIME' | 'FINISHED' | 'CANCELLED';
+export type FixtureStatus = 'SCHEDULED' | 'LIVE' | 'HALFTIME' | 'FINISHED' | 'CANCELLED' | 'SUSPENDED' | 'POSTPONED';
 
 export interface FixtureAttributes {
   id: string;
@@ -90,7 +90,7 @@ Fixture.init(
       defaultValue: 0,
     },
     status: {
-      type: DataTypes.ENUM('SCHEDULED', 'LIVE', 'HALFTIME', 'FINISHED', 'CANCELLED'),
+      type: DataTypes.ENUM('SCHEDULED', 'LIVE', 'HALFTIME', 'FINISHED', 'CANCELLED', 'SUSPENDED', 'POSTPONED'),
       allowNull: false,
       defaultValue: 'SCHEDULED',
     },

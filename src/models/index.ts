@@ -126,3 +126,5 @@ export {
   GlobalRanking,
   Notification,
 };
+
+export * from './Notification';

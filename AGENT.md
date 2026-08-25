@@ -4120,3 +4120,3433 @@ Then summarize:
 - Socket events
 - Tests performed
 - Any issues
+
+
+
+
+
+
+
+# PHASE 11 — API-FOOTBALL PROVIDER INTEGRATION
+
+The following phases are complete:
+
+- Backend foundation
+- MySQL + Sequelize
+- Authentication
+- Wallet
+- Game rooms
+- Game joining
+- Refunds
+- Snake Draft
+- Socket.IO draft
+- Fantasy Scoring Engine
+
+Now connect the FootballProvider abstraction to the real API-Football provider.
+
+Read:
+
+/docs/10-final-domain-model.md
+/docs/11-final-architecture.md
+/docs/12-concurrency-and-transactions.md
+/docs/13-final-api-map.md
+/business-decisions.md
+
+==================================================
+ENVIRONMENT
+==================================================
+
+API-Football credentials are provided through environment variables:
+
+API_FOOTBALL_BASE_URL
+API_FOOTBALL_KEY
+
+Never hardcode the API key.
+
+Never expose the API key to Flutter.
+
+Never return the API key through an API response.
+
+==================================================
+SCOPE
+==================================================
+
+Implement ONLY:
+
+- ApiFootballProvider
+- API-Football HTTP client
+- Provider authentication
+- Competition mapping
+- Fixture mapping
+- Fixture events mapping
+- Player statistics mapping
+- Provider DTO normalization
+- Error handling
+- Retry-safe provider calls
+- Basic provider integration tests
+
+Do NOT implement yet:
+
+- Background synchronization workers
+- Redis/BullMQ
+- Automatic live polling
+- Final settlement
+- Wallet rewards
+- Global ranking settlement
+
+==================================================
+SUPPORTED COMPETITIONS
+==================================================
+
+Only synchronize:
+
+1. English Premier League
+2. La Liga
+3. Saudi Pro League
+4. UEFA Champions League
+5. AFC Champions League
+
+The provider must reject/filter all unsupported competitions.
+
+Do not expose Bundesliga, Serie A, MLS, or any other competition.
+
+==================================================
+PROVIDER ABSTRACTION
+==================================================
+
+The domain must continue using:
+
+FootballProvider
+
+The domain must NOT import:
+
+ApiFootballProvider
+
+directly.
+
+Use dependency injection.
+
+Architecture:
+
+Application
+    ↓
+FootballProvider
+    ↓
+ApiFootballProvider
+    ↓
+API-Football
+
+==================================================
+NORMALIZATION
+==================================================
+
+API-Football responses must be converted into internal normalized DTOs.
+
+Do NOT pass raw API-Football responses into:
+
+- Scoring Engine
+- Domain Services
+- Game Services
+- Controllers
+- Socket.IO
+
+Create clear mappings for:
+
+Competition
+Fixture
+Team
+Player
+FixtureEvent
+PlayerMatchStatistics
+
+==================================================
+FIXTURE DATA
+==================================================
+
+The provider should support retrieving:
+
+- Fixtures
+- Fixture details
+- Fixture status
+- Teams
+- Players
+- Fixture events
+- Player statistics
+
+Use only the operations already defined by FootballProvider.
+
+Do not invent unnecessary provider methods.
+
+==================================================
+SCORING DATA
+==================================================
+
+Ensure normalized statistics can represent:
+
+- Goals
+- Assists
+- Big Chance Created
+- Successful Passes
+- Failed Passes
+- Tackles
+- Yellow Cards
+- Red Cards
+- Saves
+- Minutes Played
+
+IMPORTANT:
+
+Do NOT map:
+
+passes.key
+
+to:
+
+Big Chance Created.
+
+If API-Football does not provide a reliable Big Chance Created statistic:
+
+Return it as unavailable.
+
+The Scoring Engine must then award:
+
+0 points
+
+for that statistic.
+
+==================================================
+CLEAN SHEET DATA
+==================================================
+
+The normalized data must provide enough information for the existing scoring engine to determine:
+
+- Minutes played
+- Substitution minute
+- Goals conceded while player was on pitch
+- Player position
+
+Do NOT calculate clean sheet points inside ApiFootballProvider.
+
+The provider only normalizes the source data.
+
+The Scoring Engine owns fantasy rules.
+
+==================================================
+HTTP CLIENT
+==================================================
+
+Create a dedicated API-Football HTTP client.
+
+Requirements:
+
+- Base URL from environment.
+- API key from environment.
+- Request timeout.
+- Proper HTTP error handling.
+- Provider-specific error normalization.
+- No secrets in logs.
+- No API key in error messages.
+
+Do not use raw HTTP calls throughout the application.
+
+All API-Football requests must pass through the dedicated client.
+
+==================================================
+RATE LIMIT SAFETY
+==================================================
+
+Respect API-Football rate limits.
+
+Do not implement aggressive polling.
+
+Do not create unnecessary API requests.
+
+Do not repeatedly request the same data inside loops if it can be avoided.
+
+If the provider returns rate-limit information, preserve enough information for future synchronization logic.
+
+==================================================
+ERROR HANDLING
+==================================================
+
+Normalize provider errors into application-level errors such as:
+
+FOOTBALL_PROVIDER_UNAVAILABLE
+
+FOOTBALL_PROVIDER_TIMEOUT
+
+FOOTBALL_PROVIDER_RATE_LIMITED
+
+FOOTBALL_PROVIDER_INVALID_RESPONSE
+
+Do not expose raw API-Football responses to clients.
+
+==================================================
+TESTING
+==================================================
+
+Create tests using mocked API-Football responses.
+
+Do NOT make automated tests depend on the real API.
+
+Test:
+
+1. Successful authentication.
+2. Competition mapping.
+3. Supported competition filtering.
+4. Unsupported competition filtering.
+5. Fixture normalization.
+6. Fixture status normalization.
+7. Team normalization.
+8. Player normalization.
+9. Fixture event normalization.
+10. Player statistics normalization.
+11. Big Chance Created remains unavailable when not explicitly provided.
+12. Key Pass does not become Big Chance Created.
+13. Provider timeout.
+14. Provider HTTP error.
+15. Provider rate-limit response.
+16. Malformed provider response.
+17. API key is never exposed in logs/errors.
+18. Existing Scoring Engine tests still pass.
+19. Existing Draft tests still pass.
+20. Existing Wallet/Auth tests still pass.
+21. TypeScript compilation succeeds.
+
+==================================================
+SECURITY
+==================================================
+
+Never:
+
+- Commit .env
+- Log API_FOOTBALL_KEY
+- Return API_FOOTBALL_KEY
+- Send API_FOOTBALL_KEY to Flutter
+- Put the key in frontend code
+
+Ensure .gitignore contains:
+
+.env
+.env.*
+!.env.example
+
+Create/update:
+
+.env.example
+
+with placeholders only.
+
+==================================================
+FINAL OUTPUT
+==================================================
+
+When complete report exactly:
+
+"PHASE 11 API-FOOTBALL PROVIDER COMPLETE"
+
+Then summarize:
+
+- Provider implementation
+- Normalized DTOs
+- Supported competitions
+- Big Chance Created handling
+- Error handling
+- Rate-limit handling
+- Tests
+- Any remaining issues
+
+DO NOT implement background synchronization yet.
+
+
+
+
+
+
+
+
+# PHASE 12 — FOOTBALL DATA SYNCHRONIZATION
+
+The following phases are complete:
+
+- Backend foundation
+- MySQL + Sequelize
+- Authentication
+- Wallet
+- Game rooms
+- Game joining
+- Refunds
+- Snake Draft
+- Socket.IO
+- Fantasy Scoring Engine
+- ApiFootballProvider
+
+Now implement the Football Data Synchronization system.
+
+Read:
+
+/docs/10-final-domain-model.md
+/docs/11-final-architecture.md
+/docs/12-concurrency-and-transactions.md
+/docs/13-final-api-map.md
+/business-decisions.md
+
+==================================================
+SCOPE
+==================================================
+
+Implement:
+
+- Competition synchronization
+- Team synchronization
+- Fixture synchronization
+- Fixture event synchronization
+- Player statistics synchronization
+- Live fixture updates
+- Normalized data persistence
+- Scoring Engine integration
+- Idempotent synchronization
+- Safe retries
+- Basic synchronization jobs
+
+Do NOT implement:
+
+- Final game settlement
+- Wallet rewards
+- Global RP settlement
+- Season reset
+- Redis/BullMQ unless already required by the finalized architecture
+
+==================================================
+SUPPORTED COMPETITIONS
+==================================================
+
+Synchronize ONLY:
+
+EPL
+LALIGA
+SPL
+UCL
+ACL
+
+Never synchronize unsupported competitions.
+
+The database must not receive fixtures from unsupported competitions.
+
+==================================================
+COMPETITION SYNC
+==================================================
+
+Create a synchronization service that:
+
+1. Retrieves supported competitions from FootballProvider.
+2. Maps them to internal Competition records.
+3. Creates missing competitions.
+4. Updates existing competitions.
+5. Does not create duplicates.
+
+Use stable provider IDs.
+
+==================================================
+TEAM SYNC
+==================================================
+
+For supported competitions:
+
+- Synchronize participating teams.
+- Store provider team ID.
+- Store team name.
+- Store logo if available.
+- Update existing records instead of duplicating them.
+
+==================================================
+FIXTURE SYNC
+==================================================
+
+Synchronize fixtures belonging ONLY to supported competitions.
+
+Persist:
+
+- provider fixture ID
+- competition
+- season
+- home team
+- away team
+- kickoff time
+- status
+- scores
+
+Use the provider fixture ID as the external identity.
+
+Repeated synchronization must be idempotent.
+
+==================================================
+FIXTURE STATUS
+==================================================
+
+Normalize provider statuses into internal statuses.
+
+At minimum support:
+
+SCHEDULED
+LIVE
+HALFTIME
+SUSPENDED
+POSTPONED
+CANCELLED
+FINISHED
+
+Do not expose raw API-Football status codes to the rest of the application.
+
+==================================================
+LIVE FIXTURES
+==================================================
+
+For fixtures currently LIVE:
+
+Synchronize frequently enough to keep fantasy scores reasonably current.
+
+Update:
+
+- fixture status
+- score
+- match events
+- player statistics
+
+Do NOT use uncontrolled polling.
+
+Centralize synchronization scheduling.
+
+==================================================
+FIXTURE EVENTS
+==================================================
+
+Synchronize:
+
+- Goals
+- Assists
+- Cards
+- Substitutions
+- Other relevant events supported by the provider
+
+Store normalized events.
+
+Every provider event must have a stable external identity whenever possible.
+
+Repeated synchronization must not create duplicate events.
+
+==================================================
+PLAYER STATISTICS
+==================================================
+
+Synchronize normalized player match statistics required by the scoring engine:
+
+- Minutes
+- Goals
+- Assists
+- Passes
+- Tackles
+- Cards
+- Saves
+- Big Chance Created when explicitly available
+
+IMPORTANT:
+
+Never convert:
+
+Key Passes
+
+into:
+
+Big Chance Created.
+
+If unavailable, keep the value unavailable.
+
+==================================================
+SCORING INTEGRATION
+==================================================
+
+After synchronized data changes:
+
+Send normalized data to the existing Scoring Engine.
+
+The synchronization layer must NOT contain fantasy scoring rules.
+
+Architecture:
+
+API-Football
+↓
+ApiFootballProvider
+↓
+Football Sync Service
+↓
+Normalized DB Data
+↓
+Scoring Engine
+↓
+Game Rankings
+
+==================================================
+LIVE GAME INTEGRATION
+==================================================
+
+For every active UFL game associated with a LIVE fixture:
+
+- Detect new/changed football data.
+- Recalculate affected fantasy points.
+- Update participant rankings.
+- Broadcast relevant Socket.IO events.
+
+Possible events:
+
+game:live-event
+game:ranking
+
+Do not broadcast raw API-Football responses.
+
+==================================================
+LATE JOINERS
+==================================================
+
+A participant may join while the football fixture is already LIVE.
+
+Their selected players must receive FULL MATCH fantasy points.
+
+Therefore after a late participant drafts a player:
+
+The backend must calculate the player's accumulated statistics from the beginning of the fixture.
+
+Do NOT calculate only from the join timestamp.
+
+==================================================
+SUSPENDED MATCHES
+==================================================
+
+If provider reports:
+
+SUSPENDED
+
+Keep the associated UFL game:
+
+LIVE
+
+Do not cancel it automatically.
+
+Pause/stop scoring updates until football data resumes.
+
+When the fixture resumes:
+
+Continue synchronization.
+
+==================================================
+POSTPONED / CANCELLED MATCHES
+==================================================
+
+If a fixture is cancelled or postponed in a way that prevents fantasy completion:
+
+Find active UFL games associated with that fixture.
+
+For each affected game:
+
+- Mark game CANCELLED.
+- Refund every participant exactly 500 Coins.
+- Do not distribute rewards.
+- Do not change Global RP.
+- Create system notifications.
+
+Refund logic must reuse the existing idempotent wallet refund mechanism.
+
+Do not implement duplicate refund logic.
+
+==================================================
+UNFILLED GAMES
+==================================================
+
+When the real-world fixture starts:
+
+Check UFL games associated with the fixture.
+
+If a game has fewer than 4 participants:
+
+- Mark game CANCELLED.
+- Refund every participant 500 Coins.
+- No ranking.
+- No rewards.
+- No RP changes.
+
+Refund must be atomic and idempotent.
+
+==================================================
+DATA CORRECTIONS
+==================================================
+
+Football provider data can change.
+
+Before game settlement:
+
+- Recalculate affected fantasy scores.
+- Update rankings.
+- Do not duplicate wallet operations.
+
+After game finalization:
+
+Do NOT retroactively modify wallet rewards or RP.
+
+Final settlement will be implemented separately.
+
+==================================================
+SYNC IDEMPOTENCY
+==================================================
+
+Synchronization must be safe to run multiple times.
+
+Repeated execution must NOT:
+
+- Duplicate competitions
+- Duplicate teams
+- Duplicate fixtures
+- Duplicate events
+- Duplicate player statistics
+- Duplicate fantasy points
+- Duplicate refunds
+
+Use external provider IDs and appropriate database constraints.
+
+==================================================
+FAILURE HANDLING
+==================================================
+
+If API-Football is unavailable:
+
+- Do not corrupt existing data.
+- Do not mark fixtures cancelled merely because the provider is temporarily unavailable.
+- Log a safe provider error without secrets.
+- Retry according to the synchronization strategy.
+
+If synchronization fails halfway through:
+
+The next synchronization must safely continue.
+
+==================================================
+JOBS
+==================================================
+
+Create synchronization jobs/services for:
+
+1. Competition synchronization
+2. Upcoming fixture synchronization
+3. Live fixture synchronization
+4. Fixture finalization synchronization
+
+Keep job scheduling separate from business logic.
+
+If Redis/BullMQ is already part of the finalized architecture, use it appropriately.
+
+Otherwise structure the services so a persistent queue can be introduced without rewriting domain logic.
+
+==================================================
+MANUAL SYNC
+==================================================
+
+Provide an internal/development mechanism to trigger synchronization manually.
+
+This is for development/testing only.
+
+Do NOT expose an unauthenticated public sync endpoint.
+
+==================================================
+TESTING
+==================================================
+
+Test:
+
+1. Supported competitions synchronize.
+2. Unsupported competitions are ignored.
+3. Teams synchronize without duplicates.
+4. Fixtures synchronize without duplicates.
+5. Fixture status is normalized.
+6. Events synchronize idempotently.
+7. Player statistics synchronize idempotently.
+8. LIVE fixtures update.
+9. Suspended fixture remains active.
+10. Cancelled fixture cancels UFL games.
+11. Postponed fixture follows cancellation policy.
+12. Unfilled game at match start is cancelled.
+13. Participant refunds happen exactly once.
+14. Late joiner receives full accumulated match points.
+15. Corrected provider data recalculates scoring.
+16. Provider outage does not cancel games.
+17. Repeated synchronization produces the same database state.
+18. Existing scoring tests pass.
+19. Existing draft tests pass.
+20. Existing wallet tests pass.
+21. Existing authentication tests pass.
+22. TypeScript compilation succeeds.
+
+==================================================
+IMPORTANT
+==================================================
+
+Do NOT implement final game settlement.
+
+Do NOT implement:
+
+- 1000 / 500 / 0 / 0 rewards
+- +3 / +1 / 0 / -1 RP settlement
+- Season reset
+
+Those belong to the next phase.
+
+When complete report exactly:
+
+"PHASE 12 FOOTBALL SYNC COMPLETE"
+
+Then summarize:
+
+- Sync services
+- Jobs
+- Competition filtering
+- Fixture synchronization
+- Event synchronization
+- Player statistics
+- Live integration
+- Cancellation/refund integration
+- Idempotency
+- Tests
+- Any issues
+
+
+
+
+
+# PHASE 13 — FINAL GAME SETTLEMENT
+
+The following phases are complete:
+
+- Backend foundation
+- MySQL + Sequelize
+- Authentication
+- Wallet
+- Game rooms
+- Game joining
+- Refunds
+- Snake Draft
+- Socket.IO
+- Fantasy Scoring Engine
+- ApiFootballProvider
+- Football synchronization
+- Live scoring
+
+Now implement the FINAL GAME SETTLEMENT system.
+
+Read:
+
+/docs/10-final-domain-model.md
+/docs/11-final-architecture.md
+/docs/12-concurrency-and-transactions.md
+/docs/13-final-api-map.md
+/business-decisions.md
+
+==================================================
+SCOPE
+==================================================
+
+Implement ONLY:
+
+- Match/game finalization
+- Final fantasy score calculation
+- Deterministic ranking
+- Tie-breaking
+- Coin rewards
+- Global RP rewards
+- Wallet settlement
+- Settlement idempotency
+- Final game state
+- Final result realtime event
+- Final result API
+
+Do NOT implement:
+
+- Season reset
+- Notifications system expansion
+- Admin dashboard
+- Payment system
+- New football provider functionality
+
+==================================================
+FINAL GAME CONDITIONS
+==================================================
+
+A UFL game may be finalized only when:
+
+- The associated football fixture is actually finished.
+- The game has exactly 4 participants.
+- The game is not CANCELLED.
+- Draft has completed.
+- Final football statistics required by the scoring engine have been processed.
+
+If these conditions are not satisfied:
+
+Do NOT distribute rewards.
+
+==================================================
+FINAL SCORE
+==================================================
+
+Before settlement:
+
+Recalculate the final fantasy score for every selected player.
+
+Then calculate:
+
+Participant Total Fantasy Points
+
+from all drafted players.
+
+Do not trust a client-provided score.
+
+The server is authoritative.
+
+==================================================
+RANKING
+==================================================
+
+Rank the 4 participants using exactly:
+
+1. Total Fantasy Points DESC
+2. Total Goals Scored by drafted players DESC
+3. Total Assists by drafted players DESC
+4. Stable participantId ASC
+
+This guarantees exactly one unique rank:
+
+1
+2
+3
+4
+
+There must never be shared ranks.
+
+==================================================
+COIN REWARDS
+==================================================
+
+Final rewards are:
+
+1st:
+
++1000 Coins
+
+2nd:
+
++500 Coins
+
+3rd:
+
++0 Coins
+
+4th:
+
++0 Coins
+
+These values are authoritative.
+
+Do NOT use UI mockup values such as:
+
++250
++100
+
+==================================================
+GLOBAL RANKING POINTS
+==================================================
+
+Final RP changes:
+
+1st:
+
++3 RP
+
+2nd:
+
++1 RP
+
+3rd:
+
+0 RP
+
+4th:
+
+-1 RP
+
+==================================================
+WALLET SETTLEMENT
+==================================================
+
+The game entry fee was already deducted when joining.
+
+Therefore settlement only credits the final prize.
+
+Example:
+
+Player starts with:
+
+500
+
+Joins:
+
+-500
+
+Balance:
+
+0
+
+Finishes 1st:
+
++1000
+
+Final balance:
+
+1000
+
+Second place:
+
+500
+
+Final balance:
+
+500
+
+Third/Fourth:
+
+0
+
+Final balance:
+
+0
+
+Do NOT deduct the entry fee again during settlement.
+
+==================================================
+ATOMIC SETTLEMENT
+==================================================
+
+Final settlement MUST be performed inside a single database transaction where appropriate.
+
+The transaction must ensure:
+
+- Final ranks are stored.
+- Coin rewards are stored.
+- Wallet balances are updated.
+- Wallet transactions are created.
+- RP changes are stored.
+- Game status becomes FINISHED.
+
+Either everything succeeds or everything rolls back.
+
+Never allow:
+
+Wallet credited
+but game remains LIVE.
+
+Never allow:
+
+Game marked FINISHED
+but wallet reward missing.
+
+==================================================
+IDEMPOTENCY
+==================================================
+
+Settlement must happen exactly once.
+
+If settlement is triggered twice:
+
+The second execution must NOT:
+
+- Credit coins again.
+- Add RP again.
+- Create duplicate wallet transactions.
+- Modify final ranks incorrectly.
+
+Use database state/unique settlement records/idempotency constraints.
+
+The final settlement operation must be safe against:
+
+- Worker retries.
+- HTTP retries.
+- Server restarts.
+- Duplicate requests.
+- Concurrent settlement attempts.
+
+==================================================
+FINAL SETTLEMENT RECORD
+==================================================
+
+Store enough information to prove that settlement happened.
+
+At minimum track:
+
+- gameId
+- participantId
+- finalRank
+- fantasyPoints
+- coinReward
+- rpChange
+- settledAt
+
+Use unique constraints where appropriate.
+
+==================================================
+RP STORAGE
+==================================================
+
+Update the user's Global Ranking Points using the existing domain model.
+
+Do not create duplicate RP records for the same game participant.
+
+Every participant receives exactly one RP change.
+
+==================================================
+FINAL GAME STATE
+==================================================
+
+Normal path:
+
+LIVE
+
+↓
+
+FINISHED
+
+After FINISHED:
+
+- No new participants.
+- No new draft selections.
+- No score recalculation affecting rewards.
+- No additional settlement.
+- No additional rewards.
+
+The game becomes immutable from the perspective of settlement.
+
+==================================================
+POST-SETTLEMENT DATA CORRECTIONS
+==================================================
+
+Provider corrections occurring AFTER final settlement:
+
+Do NOT modify:
+
+- Coin rewards
+- Global RP
+- Final ranks
+
+The previously distributed rewards remain final.
+
+The game remains FINISHED.
+
+==================================================
+FINAL RESULTS API
+==================================================
+
+Implement the final results endpoint required by the existing API contract.
+
+For example:
+
+GET /api/v1/games/:gameId/result
+
+The response should provide everything required by the Final Results UI:
+
+- Game information
+- Final ranking
+- Participant
+- Avatar/name
+- Drafted players
+- Fantasy points
+- Final rank
+- Coin reward
+- RP change
+- Final score
+- Settlement timestamp
+
+Do not expose internal database implementation details.
+
+==================================================
+REALTIME
+==================================================
+
+After successful settlement broadcast:
+
+game:finished
+
+The event should contain the final public result.
+
+Example:
+
+{
+  "gameId": "...",
+  "status": "FINISHED",
+  "results": [
+    {
+      "rank": 1,
+      "participantId": "...",
+      "fantasyPoints": 120,
+      "coinReward": 1000,
+      "rpChange": 3
+    },
+    {
+      "rank": 2,
+      "participantId": "...",
+      "fantasyPoints": 110,
+      "coinReward": 500,
+      "rpChange": 1
+    },
+    {
+      "rank": 3,
+      "participantId": "...",
+      "fantasyPoints": 90,
+      "coinReward": 0,
+      "rpChange": 0
+    },
+    {
+      "rank": 4,
+      "participantId": "...",
+      "fantasyPoints": 80,
+      "coinReward": 0,
+      "rpChange": -1
+    }
+  ]
+}
+
+Do not include wallet internals or sensitive information.
+
+==================================================
+NOTIFICATION HOOK
+==================================================
+
+After successful settlement, create a clean application-level hook/service event for future notifications.
+
+Do NOT build the complete notification system yet.
+
+The hook should allow later implementation of:
+
+"You finished 1st place and earned 1000 Coins."
+
+==================================================
+CONCURRENCY
+==================================================
+
+Two settlement processes may attempt to finalize the same game simultaneously.
+
+Only one may succeed.
+
+The other must safely detect that settlement already happened.
+
+Use database transactions and row locking/unique constraints where appropriate.
+
+Do not rely only on:
+
+if (game.status === FINISHED)
+
+without transactional protection.
+
+==================================================
+CANCELLED GAMES
+==================================================
+
+A CANCELLED game MUST NEVER be finalized.
+
+A CANCELLED game receives:
+
+- No prize
+- No RP
+- No final ranking settlement
+
+Refunds are handled by the existing cancellation/refund system.
+
+==================================================
+VALIDATION
+==================================================
+
+Before settlement verify:
+
+- Exactly 4 participants.
+- Every participant has exactly 2 drafted players.
+- Draft completed.
+- Fixture finished.
+- Game not CANCELLED.
+- Final player statistics available.
+- Fantasy scores calculated successfully.
+
+If validation fails:
+
+Do not partially settle.
+
+==================================================
+TESTING
+==================================================
+
+Create automated tests for:
+
+1. Correct final fantasy score calculation.
+2. Correct ranking.
+3. Points tie resolved by goals.
+4. Goals tie resolved by assists.
+5. Goals and assists tie resolved by participantId.
+6. Exactly one rank per participant.
+7. 1st receives +1000 Coins.
+8. 2nd receives +500 Coins.
+9. 3rd receives 0 Coins.
+10. 4th receives 0 Coins.
+11. 1st receives +3 RP.
+12. 2nd receives +1 RP.
+13. 3rd receives 0 RP.
+14. 4th receives -1 RP.
+15. Entry fee is NOT deducted again.
+16. Wallet reward transaction is created exactly once.
+17. RP change is created exactly once.
+18. Duplicate settlement does not duplicate rewards.
+19. Concurrent settlement allows only one successful settlement.
+20. Transaction rollback works correctly.
+21. CANCELLED games cannot settle.
+22. Incomplete games cannot settle.
+23. Final result endpoint works.
+24. game:finished event is emitted only after successful settlement.
+25. Existing scoring tests pass.
+26. Existing draft tests pass.
+27. Existing wallet tests pass.
+28. Existing authentication tests pass.
+29. Existing football synchronization tests pass.
+30. TypeScript compilation succeeds.
+
+==================================================
+IMPORTANT
+==================================================
+
+DO NOT implement:
+
+- Season reset
+- Global leaderboard redesign
+- Notifications UI
+- Payment
+- Admin features
+
+When complete report exactly:
+
+"PHASE 13 FINAL SETTLEMENT COMPLETE"
+
+Then summarize:
+
+- Settlement flow
+- Ranking algorithm
+- Coin rewards
+- RP rewards
+- Transaction safety
+- Idempotency
+- Concurrency protection
+- Final result API
+- Socket event
+- Tests
+- Any issues
+
+
+
+
+
+# PHASE 14 — GLOBAL RANKING & FOOTBALL SEASONS
+
+The following phases are complete:
+
+- Backend foundation
+- MySQL + Sequelize
+- Authentication
+- Wallet
+- Game rooms
+- Game joining
+- Refunds
+- Snake Draft
+- Socket.IO
+- Fantasy Scoring Engine
+- ApiFootballProvider
+- Football synchronization
+- Live scoring
+- Final Game Settlement
+
+Now implement Global Ranking and Football Seasons.
+
+Read:
+
+/docs/10-final-domain-model.md
+/docs/11-final-architecture.md
+/docs/12-concurrency-and-transactions.md
+/docs/13-final-api-map.md
+/business-decisions.md
+
+==================================================
+SCOPE
+==================================================
+
+Implement:
+
+- Season management
+- Active season
+- Global Ranking Points
+- Global leaderboard
+- Season-specific ranking
+- Season reset
+- Ranking APIs
+- Ranking realtime updates
+- Historical season ranking support
+
+Do NOT implement:
+
+- New game scoring rules
+- Wallet rewards
+- Game settlement changes
+- Football provider changes
+- Notifications UI
+- Admin dashboard
+
+==================================================
+AUTHORITATIVE RP RULES
+==================================================
+
+1st place:
+
++3 RP
+
+2nd place:
+
++1 RP
+
+3rd place:
+
+0 RP
+
+4th place:
+
+-1 RP
+
+These values are authoritative.
+
+Every finalized game produces exactly one RP change per participant.
+
+==================================================
+SEASONS
+==================================================
+
+The system must support football seasons.
+
+A Season should have enough information to represent:
+
+- season identifier
+- name
+- start date
+- end date
+- status
+- provider season ID where applicable
+
+Possible statuses:
+
+UPCOMING
+ACTIVE
+COMPLETED
+
+Only ONE season may be ACTIVE at a time.
+
+==================================================
+ACTIVE SEASON
+==================================================
+
+All newly finalized games must award RP to the currently ACTIVE season.
+
+Do NOT allow a game to silently write RP to an inactive season.
+
+The season associated with a game must be persisted so historical results remain correct.
+
+==================================================
+RANKING MODEL
+==================================================
+
+Global leaderboard should contain:
+
+- User
+- Current season
+- RP
+- Rank
+
+Ranking order:
+
+1. RP descending
+2. Stable userId ascending
+
+Rank must be deterministic.
+
+Do not use random ordering.
+
+==================================================
+RP TRANSACTIONS
+==================================================
+
+Every RP change should be traceable.
+
+For each finalized game:
+
+Store:
+
+- userId
+- seasonId
+- gameId
+- RP change
+- createdAt
+
+The same:
+
+seasonId + gameId + userId
+
+must NOT be inserted twice.
+
+This guarantees idempotency.
+
+==================================================
+GAME SETTLEMENT INTEGRATION
+==================================================
+
+The existing Final Settlement already calculates:
+
+1st = +3 RP
+2nd = +1 RP
+3rd = 0 RP
+4th = -1 RP
+
+Do NOT duplicate settlement logic.
+
+Create a clean Ranking service responsible for applying the RP change.
+
+The Final Settlement service should call the Ranking service.
+
+Do not create a second competing implementation.
+
+==================================================
+SEASON RESET
+==================================================
+
+At the start of a new football season:
+
+The new season becomes ACTIVE.
+
+Users start that season with:
+
+0 RP
+
+Do NOT destroy historical season data.
+
+Previous season rankings must remain available.
+
+Do NOT simply overwrite one global RP column if that would destroy history.
+
+Ranking must be season-scoped.
+
+==================================================
+SEASON TRANSITION
+==================================================
+
+When activating a new season:
+
+1. Previous ACTIVE season becomes COMPLETED.
+2. New season becomes ACTIVE.
+3. New season starts with no RP.
+4. Historical ranking remains accessible.
+5. New games use the new active season.
+
+The transition must be transactional.
+
+Only one active season may exist after the operation.
+
+==================================================
+SEASON SAFETY
+==================================================
+
+Do not automatically create arbitrary seasons from user requests.
+
+Season creation/activation should be controlled by backend/admin-level logic.
+
+Do NOT expose unauthenticated season mutation endpoints.
+
+==================================================
+LEADERBOARD API
+==================================================
+
+Implement endpoints required by the UI.
+
+At minimum support:
+
+GET /api/v1/ranking
+
+GET /api/v1/ranking/me
+
+GET /api/v1/seasons
+
+GET /api/v1/seasons/:seasonId/ranking
+
+Use the finalized API map.
+
+Do not create duplicate or unnecessary endpoints.
+
+==================================================
+RANKING RESPONSE
+==================================================
+
+Leaderboard response should provide the UI with:
+
+- Rank
+- User ID
+- Username
+- Avatar
+- RP
+- Current season
+- Optional games played/statistics if already required by the UI
+
+Do not expose:
+
+- Password hashes
+- JWTs
+- Wallet internals
+- Private database fields
+
+==================================================
+CURRENT USER RANK
+==================================================
+
+GET /api/v1/ranking/me should return:
+
+- Current active season
+- Current user RP
+- Current rank
+- Total participants if required by the UI
+
+If the user has no ranking entry yet:
+
+Return rank appropriately as unranked/0 depending on the finalized API contract.
+
+Do not create fake ranking records unnecessarily.
+
+==================================================
+SEASON HISTORY
+==================================================
+
+Users should be able to view historical season rankings if required by the UI.
+
+Historical ranking data must remain immutable after a season is completed, except for controlled administrative correction.
+
+Do not reset/delete old records.
+
+==================================================
+REALTIME RANKING
+==================================================
+
+After successful Final Game Settlement:
+
+The backend may emit:
+
+ranking:updated
+
+The event should contain only the public information necessary for the leaderboard UI.
+
+Example:
+
+{
+  "seasonId": "...",
+  "gameId": "...",
+  "updatedUsers": [
+    {
+      "userId": "...",
+      "rpChange": 3
+    }
+  ]
+}
+
+Do not broadcast private wallet information.
+
+==================================================
+RANK CALCULATION
+==================================================
+
+Leaderboard rank must be deterministic.
+
+Example:
+
+User A: 20 RP
+User B: 20 RP
+User C: 15 RP
+
+If A.userId < B.userId:
+
+A = Rank 1
+B = Rank 2
+C = Rank 3
+
+Do not produce shared ranks.
+
+==================================================
+NEGATIVE RP
+==================================================
+
+Negative RP is allowed.
+
+A user may have:
+
+- 0 RP
+- positive RP
+- negative RP
+
+Do not clamp RP to zero.
+
+The only automatic reset is when a NEW season starts.
+
+==================================================
+SEASON START
+==================================================
+
+At the beginning of an ACTIVE season:
+
+All users effectively start at:
+
+0 RP
+
+There is no need to create zero-value ranking rows for every user unless required by the database/UI.
+
+A user can receive their first ranking record when they participate in a finalized game.
+
+==================================================
+CONCURRENCY
+==================================================
+
+Season activation must be transaction-safe.
+
+Two processes attempting to activate different seasons simultaneously must not result in:
+
+- Two ACTIVE seasons
+- RP written to the wrong season
+- Partial transition
+
+Use database constraints and transactions.
+
+==================================================
+TESTING
+==================================================
+
+Test:
+
+1. Create season.
+2. Activate season.
+3. Only one ACTIVE season exists.
+4. Previous season becomes COMPLETED.
+5. New season starts at 0 RP.
+6. Final settlement adds correct RP.
+7. 1st receives +3.
+8. 2nd receives +1.
+9. 3rd receives 0.
+10. 4th receives -1.
+11. Negative RP works.
+12. Duplicate RP transaction is prevented.
+13. Historical season remains accessible.
+14. Current ranking is season-scoped.
+15. Ranking order is deterministic.
+16. Equal RP uses userId fallback.
+17. Current user ranking endpoint works.
+18. Season list endpoint works.
+19. Historical ranking endpoint works.
+20. Concurrent season activation is safe.
+21. Existing settlement tests pass.
+22. Existing wallet tests pass.
+23. Existing scoring tests pass.
+24. Existing draft tests pass.
+25. Existing football sync tests pass.
+26. TypeScript compilation succeeds.
+
+==================================================
+DO NOT IMPLEMENT
+==================================================
+
+Do NOT implement:
+
+- Notifications
+- Admin dashboard
+- Payment
+- New scoring rules
+- New game states
+- API-Football changes
+
+When complete report exactly:
+
+"PHASE 14 GLOBAL RANKING COMPLETE"
+
+Then summarize:
+
+- Season implementation
+- RP implementation
+- Ranking calculation
+- Season transition
+- Historical rankings
+- APIs
+- Realtime events
+- Concurrency protection
+- Tests
+- Any issues
+
+
+
+# PHASE 15 — NOTIFICATIONS SYSTEM
+
+The following phases are complete:
+
+- Backend foundation
+- MySQL + Sequelize
+- Authentication
+- Wallet
+- Game rooms
+- Game joining
+- Refunds
+- Snake Draft
+- Socket.IO
+- Fantasy Scoring Engine
+- ApiFootballProvider
+- Football synchronization
+- Live scoring
+- Final Game Settlement
+- Global Ranking
+- Football Seasons
+
+Now implement the Notifications system.
+
+Read:
+
+/docs/10-final-domain-model.md
+/docs/11-final-architecture.md
+/docs/12-concurrency-and-transactions.md
+/docs/13-final-api-map.md
+/business-decisions.md
+
+==================================================
+SCOPE
+==================================================
+
+Implement:
+
+- Notification entity/model if not already implemented
+- Notification service
+- Creating notifications from backend events
+- Read/unread state
+- Notification list API
+- Mark notification as read
+- Mark all notifications as read
+- Realtime notification event through Socket.IO
+- Notification lifecycle
+- Idempotency for important system notifications
+
+Do NOT implement:
+
+- Firebase Cloud Messaging
+- Push notification provider
+- Email
+- SMS
+- Notification scheduling system
+- Admin notification dashboard
+
+Socket.IO is enough for this phase.
+
+==================================================
+NOTIFICATION ENTITY
+==================================================
+
+A notification should contain at minimum:
+
+- id
+- userId
+- type
+- title
+- message
+- isRead
+- createdAt
+- readAt where applicable
+- relatedEntityType where useful
+- relatedEntityId where useful
+
+Use the existing Sequelize/domain conventions.
+
+Do not duplicate models.
+
+==================================================
+NOTIFICATION TYPES
+==================================================
+
+Use stable notification types.
+
+Examples:
+
+GAME_JOINED
+GAME_STARTED
+DRAFT_TURN
+DRAFT_AUTO_PICK
+GAME_FINISHED
+GAME_CANCELLED
+GAME_REFUNDED
+RANKING_UPDATED
+SEASON_STARTED
+SYSTEM
+
+Use the smallest set actually required by the existing UI and backend events.
+
+Do not create unnecessary notification types.
+
+==================================================
+GAME FINISHED
+==================================================
+
+After successful final settlement:
+
+Create a notification for each participant.
+
+Example:
+
+Title:
+
+"Game Finished"
+
+Message:
+
+"You finished 1st and earned 1000 Coins."
+
+The message must use the actual:
+
+- rank
+- coin reward
+- RP change
+
+Do NOT calculate the result on the client.
+
+==================================================
+GAME CANCELLED
+==================================================
+
+When a game is cancelled:
+
+Create a notification for every participant.
+
+Example:
+
+Title:
+
+"Game Cancelled"
+
+Message:
+
+"Your game was cancelled. Your 500 Coins entry fee has been refunded."
+
+Only create the notification after the refund succeeds.
+
+Do not send a false refund notification.
+
+==================================================
+REFUND NOTIFICATION
+==================================================
+
+Refund notifications must be idempotent.
+
+If cancellation/refund processing is retried:
+
+Do NOT create duplicate refund notifications.
+
+Use an appropriate unique/idempotency strategy.
+
+==================================================
+DRAFT NOTIFICATIONS
+==================================================
+
+If required by the current UI:
+
+Notify the user when:
+
+- It becomes their draft turn.
+- Their turn is automatically completed because of timeout.
+
+Example:
+
+"Your turn"
+
+"You can now select a player."
+
+For auto-pick:
+
+"Draft Auto-Pick"
+
+"Your turn expired and a player was automatically selected."
+
+Realtime Socket.IO events may be used instead of persistent notifications for short-lived gameplay events.
+
+Do NOT persist every gameplay event unnecessarily.
+
+==================================================
+PERSISTENT VS REALTIME
+==================================================
+
+Use this rule:
+
+Persistent notification:
+
+Important event that the user may need to see later.
+
+Examples:
+
+- Game finished
+- Game cancelled
+- Refund
+- Season started
+- Important ranking update
+
+Realtime only:
+
+Short-lived gameplay events.
+
+Examples:
+
+- Draft countdown
+- Current turn
+- Player selected
+- Live score update
+
+Do not fill the notification table with high-frequency live events.
+
+==================================================
+SOCKET EVENT
+==================================================
+
+Emit:
+
+notification:new
+
+to the affected user's private Socket.IO room.
+
+Payload:
+
+{
+  "id": "...",
+  "type": "GAME_FINISHED",
+  "title": "Game Finished",
+  "message": "...",
+  "createdAt": "..."
+}
+
+Do not broadcast private notifications to other users.
+
+==================================================
+PRIVATE SOCKET ROOMS
+==================================================
+
+Use the authenticated user's private Socket.IO room.
+
+Conceptually:
+
+user:{userId}
+
+Only the authenticated owner of that userId may receive the notification.
+
+Do not trust a client-supplied userId.
+
+==================================================
+NOTIFICATION API
+==================================================
+
+Implement according to the existing API contract.
+
+At minimum:
+
+GET /api/v1/notifications
+
+PATCH /api/v1/notifications/:id/read
+
+PATCH /api/v1/notifications/read-all
+
+Support pagination for notification listing.
+
+Return:
+
+- id
+- type
+- title
+- message
+- isRead
+- createdAt
+- readAt
+- related entity information where appropriate
+
+Do not expose internal database fields.
+
+==================================================
+AUTHORIZATION
+==================================================
+
+A user may only:
+
+- Read their own notifications.
+- Mark their own notification as read.
+- Mark their own notifications as read-all.
+
+Never allow:
+
+GET another user's notifications.
+
+Never allow:
+
+Mark another user's notification as read.
+
+==================================================
+READ STATE
+==================================================
+
+When marking a notification as read:
+
+Set:
+
+isRead = true
+
+readAt = current timestamp
+
+The operation should be idempotent.
+
+Calling it multiple times must not produce an error or corrupt the record.
+
+==================================================
+READ ALL
+==================================================
+
+Mark all unread notifications belonging to the authenticated user as read.
+
+Do not modify notifications belonging to other users.
+
+==================================================
+NOTIFICATION CREATION
+==================================================
+
+Create a NotificationService.
+
+Business services should call the notification service after successful business operations.
+
+Examples:
+
+GameService
+→ NotificationService
+
+SettlementService
+→ NotificationService
+
+RefundService
+→ NotificationService
+
+SeasonService
+→ NotificationService
+
+Do NOT put notification creation directly inside controllers.
+
+==================================================
+TRANSACTION SAFETY
+==================================================
+
+Important rule:
+
+A notification claiming that money/coins were awarded or refunded must NEVER be created if the underlying operation failed.
+
+For operations inside a database transaction:
+
+Create the notification in the same transaction when appropriate.
+
+For realtime Socket.IO emission:
+
+Emit only AFTER the database transaction commits successfully.
+
+Never emit:
+
+notification:new
+
+for an operation that later rolls back.
+
+==================================================
+IDEMPOTENCY
+==================================================
+
+Important notifications must not be duplicated.
+
+At minimum protect:
+
+- GAME_FINISHED
+- GAME_CANCELLED
+- GAME_REFUNDED
+- SEASON_STARTED
+
+Use deterministic business identifiers where appropriate.
+
+Examples:
+
+GAME_FINISHED:
+
+userId + gameId + type
+
+GAME_REFUNDED:
+
+userId + gameId + type
+
+SEASON_STARTED:
+
+userId + seasonId + type
+
+Do not rely only on application-level checks.
+
+Use database constraints where appropriate.
+
+==================================================
+SEASON STARTED
+==================================================
+
+When a new season becomes ACTIVE:
+
+Users may receive a season-start notification.
+
+Do not generate millions of notifications synchronously if the application has a large user base.
+
+If the existing architecture supports background jobs, create a safe asynchronous job/hook.
+
+For now, implement the service abstraction without requiring a massive synchronous operation.
+
+==================================================
+RANKING UPDATED
+==================================================
+
+Do not create a persistent notification for every RP change unless the UI explicitly requires it.
+
+Use the existing realtime:
+
+ranking:updated
+
+for live leaderboard changes.
+
+Only create a persistent ranking notification if clearly required by the UI.
+
+==================================================
+NOTIFICATION LIST
+==================================================
+
+The API should support:
+
+- pagination
+- newest first
+- unread count if useful to the UI
+
+Example response:
+
+{
+  "items": [],
+  "pagination": {
+    "page": 1,
+    "limit": 20,
+    "total": 100,
+    "hasNext": true
+  },
+  "unreadCount": 5
+}
+
+Follow the existing project API response conventions if they already exist.
+
+==================================================
+TESTING
+==================================================
+
+Create tests for:
+
+1. User can list own notifications.
+2. User cannot list another user's notifications.
+3. User can mark own notification as read.
+4. User cannot mark another user's notification as read.
+5. Mark read is idempotent.
+6. Read-all affects only current user.
+7. GAME_FINISHED creates notification.
+8. GAME_CANCELLED creates notification.
+9. Refund notification only appears after successful refund.
+10. Duplicate settlement does not create duplicate GAME_FINISHED notifications.
+11. Duplicate refund does not create duplicate GAME_REFUNDED notifications.
+12. notification:new is emitted after successful commit.
+13. Failed transaction does not emit notification:new.
+14. Draft realtime events are not unnecessarily persisted.
+15. Season notification mechanism is safe.
+16. Pagination works.
+17. Unread count works if implemented.
+18. Existing settlement tests pass.
+19. Existing ranking tests pass.
+20. Existing wallet tests pass.
+21. Existing game tests pass.
+22. TypeScript compilation succeeds.
+
+==================================================
+IMPORTANT
+==================================================
+
+Do NOT implement:
+
+- Firebase Cloud Messaging
+- Push notifications
+- Email
+- SMS
+- Admin notification management
+
+Keep the system ready for a future push provider.
+
+When complete report exactly:
+
+"PHASE 15 NOTIFICATIONS COMPLETE"
+
+Then summarize:
+
+- Notification model
+- Notification types
+- APIs
+- Socket event
+- Authorization
+- Idempotency
+- Transaction safety
+- Tests
+- Any issues
+
+
+# PHASE 16 — FINAL API AUDIT & UI CONTRACT VALIDATION
+
+The following phases are complete:
+
+- Backend foundation
+- MySQL + Sequelize
+- Authentication
+- Wallet
+- Game rooms
+- Game joining
+- Refunds
+- Snake Draft
+- Socket.IO
+- Fantasy Scoring Engine
+- ApiFootballProvider
+- Football synchronization
+- Live scoring
+- Final Game Settlement
+- Global Ranking
+- Football Seasons
+- Notifications
+
+Now perform a FINAL API AUDIT against the actual UI.
+
+==================================================
+CRITICAL RULE
+==================================================
+
+DO NOT redesign the backend architecture.
+
+DO NOT create a new architecture.
+
+DO NOT replace Sequelize.
+
+DO NOT replace MySQL.
+
+DO NOT change existing business rules.
+
+DO NOT implement unrelated features.
+
+This phase is an audit and correction phase.
+
+Only make implementation changes when they are required to satisfy:
+
+1. Existing UI requirements.
+2. Confirmed business decisions.
+3. Existing API contracts.
+4. Security requirements.
+5. Data consistency requirements.
+
+==================================================
+READ THE SOURCE OF TRUTH
+==================================================
+
+Read:
+
+/ui/
+/docs/all.md
+/docs/01-ui-audit.md
+/docs/02-user-flows.md
+/docs/03-domain-model.md
+/docs/04-ui-data-contract.md
+/docs/05-api-contract.md
+/docs/06-realtime-contract.md
+/docs/07-business-rules.md
+/docs/08-open-questions.md
+/docs/09-backend-architecture.md
+/docs/10-final-domain-model.md
+/docs/11-final-architecture.md
+/docs/12-concurrency-and-transactions.md
+/docs/13-final-api-map.md
+/business-decisions.md
+/review.md
+
+Also inspect the actual implemented backend routes/controllers/services.
+
+==================================================
+STEP 1 — INVENTORY ALL API ENDPOINTS
+==================================================
+
+Create a complete inventory of every currently implemented REST endpoint.
+
+For each endpoint document:
+
+- HTTP method
+- URL
+- Authentication
+- Authorization
+- Request parameters
+- Request body
+- Response
+- Errors
+- Controller
+- Service
+- Database entities
+- UI screen consuming it
+
+Do not document endpoints that do not actually exist as implemented.
+
+==================================================
+STEP 2 — UI → API COVERAGE
+==================================================
+
+Inspect every UI screen.
+
+For every backend-required UI action determine:
+
+- Existing endpoint
+- Missing endpoint
+- Incorrect endpoint
+- Incorrect response shape
+- Missing response field
+- Incorrect authentication requirement
+
+Create:
+
+/docs/14-ui-api-audit.md
+
+Use this structure:
+
+# UI API Audit
+
+## Authentication
+## Home
+## Match Discovery
+## Match Details
+## Join Game
+## Waiting Room
+## Snake Draft
+## Live Game
+## Live Ranking
+## Final Results
+## Wallet
+## Transactions
+## Global Ranking
+## Seasons
+## Profile
+## Game History
+## Notifications
+## Settings
+
+For every section document:
+
+UI requirement
+→ Endpoint
+→ Status
+
+Possible statuses:
+
+IMPLEMENTED
+MISSING
+INCORRECT
+NOT_REQUIRED
+
+==================================================
+STEP 3 — RESPONSE CONTRACT VALIDATION
+==================================================
+
+Compare actual backend responses against what the UI needs.
+
+Pay special attention to:
+
+- IDs
+- names
+- avatars
+- images
+- timestamps
+- coin balances
+- wallet transactions
+- game status
+- participant count
+- player selection
+- draft turn
+- draft countdown
+- fantasy points
+- rankings
+- rewards
+- RP
+- notifications
+- pagination
+
+If a response is missing required data:
+
+Fix the backend response.
+
+Do not force the Flutter application to make unnecessary additional requests if the existing API contract can reasonably provide the data.
+
+==================================================
+STEP 4 — AUTHORIZATION AUDIT
+==================================================
+
+Verify every protected endpoint.
+
+Check:
+
+- Authentication middleware
+- Ownership checks
+- Game membership checks
+- User-specific resources
+- Wallet access
+- Notifications
+- Profile
+- Game history
+- Ranking
+
+A user must never be able to access another user's private information by changing an ID in the URL.
+
+Test IDOR scenarios.
+
+Examples:
+
+User A:
+
+GET /users/UserB
+
+must fail.
+
+User A:
+
+GET /games/GameB
+
+must fail if GameB is private and User A is not a participant.
+
+User A:
+
+GET /wallet/UserB
+
+must fail.
+
+==================================================
+STEP 5 — WALLET API AUDIT
+==================================================
+
+Verify:
+
+- Initial 500 Coins
+- Join deduction 500
+- Rewarded Ad +500
+- Rewarded Ad only when balance == 0
+- Refund +500
+- First place +1000
+- Second place +500
+- Third +0
+- Fourth +0
+
+Verify:
+
+No endpoint trusts a client-provided wallet balance.
+
+The server must always read the authoritative balance.
+
+Verify idempotency for:
+
+- Join
+- Refund
+- Reward
+- Settlement
+- Rewarded Ad
+
+==================================================
+STEP 6 — GAME API AUDIT
+==================================================
+
+Verify complete lifecycle:
+
+WAITING
+→ DRAFTING
+→ LIVE
+→ FINISHED
+
+Cancellation:
+
+WAITING / DRAFTING / LIVE
+→ CANCELLED
+
+Verify:
+
+- Exactly 4 participants required for competition.
+- Joining is allowed while the room is accepting players.
+- Joining is allowed even when the real-world match is already LIVE.
+- Late joiners receive full match fantasy points.
+- Incomplete room at match start is cancelled.
+- 500 Coins refunded.
+- Match cancellation causes refund.
+- Postponed fixture handling.
+- Suspended fixture remains active when appropriate.
+- FINISHED games cannot accept joins.
+- CANCELLED games cannot accept joins.
+
+==================================================
+STEP 7 — DRAFT API AUDIT
+==================================================
+
+Verify:
+
+- Exactly 2 selections per user.
+- 8 unique players.
+- Snake Draft.
+- 35 second turns.
+- Server controls turn expiration.
+- Auto-pick uses deterministic player rating.
+- Already-selected players cannot be selected.
+- Client cannot select for another user.
+- Client cannot select outside its turn.
+- Client cannot select an already taken player.
+
+Verify concurrency protection.
+
+Two users must never successfully select the same football player.
+
+==================================================
+STEP 8 — SCORING API AUDIT
+==================================================
+
+Verify server-side scoring.
+
+The client must never submit final fantasy points.
+
+Verify:
+
+Goal +40
+Assist +20
+Big Chance Created +5 only when verified
+Successful Pass +1
+Failed Pass -1
+Tackle +3
+Yellow -5
+Red -20
+Clean Sheet +20
+Goalkeeper Save +10
+
+Verify:
+
+- Clean Sheet requires >= 60 minutes.
+- Zero goals conceded while player was on pitch.
+- Key Passes are NOT used as Big Chance Created.
+- Provider mapping remains isolated.
+
+==================================================
+STEP 9 — FINAL SETTLEMENT AUDIT
+==================================================
+
+Verify:
+
+1st:
+
+1000 Coins
++3 RP
+
+2nd:
+
+500 Coins
++1 RP
+
+3rd:
+
+0 Coins
+0 RP
+
+4th:
+
+0 Coins
+-1 RP
+
+Verify deterministic tie-breaking:
+
+1. Fantasy Points
+2. Goals
+3. Assists
+4. participantId
+
+Verify:
+
+- No shared rank.
+- No duplicate settlement.
+- No duplicate wallet reward.
+- No duplicate RP.
+- CANCELLED games cannot settle.
+
+==================================================
+STEP 10 — RANKING API AUDIT
+==================================================
+
+Verify:
+
+GET /api/v1/ranking
+
+GET /api/v1/ranking/me
+
+GET /api/v1/seasons
+
+GET /api/v1/seasons/:seasonId/ranking
+
+Verify:
+
+- Active season.
+- Historical seasons.
+- Negative RP.
+- Deterministic ranking.
+- Current user rank.
+- Season isolation.
+
+==================================================
+STEP 11 — NOTIFICATION API AUDIT
+==================================================
+
+Verify:
+
+GET /api/v1/notifications
+
+PATCH /api/v1/notifications/:id/read
+
+PATCH /api/v1/notifications/read-all
+
+Verify:
+
+- User isolation.
+- Pagination.
+- Unread state.
+- Read timestamp.
+- Idempotent read.
+- GAME_FINISHED.
+- GAME_CANCELLED.
+- GAME_REFUNDED.
+- SEASON_STARTED.
+
+==================================================
+STEP 12 — SOCKET.IO AUDIT
+==================================================
+
+Inventory every implemented Socket.IO event.
+
+For each:
+
+- Event
+- Sender
+- Receiver
+- Authentication
+- Payload
+- UI consumer
+- Frequency
+- Persistence requirement
+
+Verify private user rooms.
+
+Verify game rooms.
+
+Verify users cannot subscribe to unauthorized private game/user rooms.
+
+Verify important events:
+
+game:state
+game:draft-turn
+game:player-selected
+game:auto-pick
+game:live-event
+game:ranking
+game:finished
+wallet:updated
+notification:new
+ranking:updated
+
+Only keep events that are actually needed.
+
+Do not invent unnecessary events.
+
+==================================================
+STEP 13 — ERROR CONTRACT
+==================================================
+
+Audit all API errors.
+
+Use consistent structure.
+
+Example:
+
+{
+  "success": false,
+  "error": {
+    "code": "INSUFFICIENT_FUNDS",
+    "message": "Insufficient Coins."
+  }
+}
+
+Do not expose:
+
+- Stack traces
+- SQL errors
+- Internal filesystem paths
+- Secrets
+- API keys
+- Database credentials
+
+Verify HTTP status codes.
+
+==================================================
+STEP 14 — SECURITY AUDIT
+==================================================
+
+Check:
+
+- Authentication
+- Authorization
+- IDOR
+- Input validation
+- SQL injection protection through Sequelize
+- Mass assignment
+- Rate limiting where needed
+- CORS
+- Helmet/security headers
+- JWT validation
+- Password hashing
+- Sensitive data exposure
+- Socket authentication
+- Socket room authorization
+- Wallet manipulation
+- Game manipulation
+- Draft manipulation
+- Score manipulation
+
+Do NOT introduce unnecessary security packages.
+
+Use the existing architecture.
+
+==================================================
+STEP 15 — DATABASE/API CONSISTENCY
+==================================================
+
+Verify all API operations match Sequelize models.
+
+Check:
+
+- Foreign keys
+- Unique constraints
+- Indexes
+- Nullable fields
+- Enum values
+- Transaction boundaries
+
+Identify N+1 query problems where obvious.
+
+Do not perform premature optimization.
+
+==================================================
+STEP 16 — FIX REAL PROBLEMS
+==================================================
+
+After the audit:
+
+Fix only actual problems found.
+
+Examples:
+
+- Missing endpoint.
+- Missing field.
+- Wrong authorization.
+- Wrong response.
+- Broken validation.
+- Incorrect business rule.
+- Missing transaction.
+- Missing idempotency.
+- Security vulnerability.
+
+Do not rewrite working code unnecessarily.
+
+==================================================
+STEP 17 — TEST
+==================================================
+
+Run:
+
+- Unit tests
+- Integration tests
+- API tests
+- Existing tests
+
+Also test:
+
+- Authentication failures.
+- Authorization failures.
+- Wallet race conditions.
+- Duplicate requests.
+- Duplicate settlement.
+- Duplicate refund.
+- Duplicate rewarded ad claim.
+- Concurrent draft selections.
+- Concurrent game joining.
+- Unauthorized Socket.IO access.
+
+Fix failures caused by this audit.
+
+==================================================
+FINAL DOCUMENTATION
+==================================================
+
+Create:
+
+/docs/14-ui-api-audit.md
+
+And:
+
+/docs/15-api-reference.md
+
+15-api-reference.md must contain the final implemented REST API reference.
+
+For every endpoint include:
+
+- Method
+- Path
+- Auth
+- Request
+- Response
+- Errors
+- UI consumer
+
+Also create:
+
+/docs/16-realtime-reference.md
+
+Document final Socket.IO events.
+
+==================================================
+IMPORTANT
+==================================================
+
+Do NOT implement:
+
+- Admin dashboard
+- Payment
+- Firebase Push Notifications
+- New game mechanics
+- New scoring rules
+- New competitions
+
+This phase is ONLY:
+
+FINAL API AUDIT
++
+UI CONTRACT VALIDATION
++
+SECURITY REVIEW
++
+FIX REAL ISSUES
+
+When complete report exactly:
+
+"PHASE 16 API AUDIT COMPLETE"
+
+Then summarize:
+
+- Total implemented endpoints
+- Missing endpoints
+- Fixed endpoints
+- Security issues found
+- Authorization issues found
+- Wallet issues found
+- Game issues found
+- Socket issues found
+- Tests executed
+- Remaining issues
+
+
+
+
+
+
+
+# PHASE 17 — END-TO-END BACKEND VALIDATION
+
+The backend implementation is now substantially complete.
+
+The project already contains:
+
+- MySQL
+- Sequelize
+- Models
+- Associations
+- Controllers
+- Services
+- REST APIs
+- Authentication
+- Wallet
+- Game lifecycle
+- Game joining
+- Refunds
+- Snake Draft
+- Socket.IO
+- Fantasy scoring
+- API-Football integration
+- Football synchronization
+- Live scoring
+- Final game settlement
+- Global ranking
+- Seasons
+- Notifications
+
+DO NOT add new features.
+
+DO NOT redesign the architecture.
+
+DO NOT replace MySQL.
+
+DO NOT replace Sequelize.
+
+DO NOT replace existing controllers/services.
+
+DO NOT rewrite working code unnecessarily.
+
+The purpose of this phase is ONLY to validate that the existing backend works correctly as one complete system.
+
+==================================================
+STEP 1 — READ THE PROJECT
+==================================================
+
+Read:
+
+/business-decisions.md
+
+/docs/
+/ui/
+
+Inspect the actual implemented backend.
+
+Identify:
+
+- Routes
+- Controllers
+- Services
+- Models
+- Jobs/workers
+- Socket.IO handlers
+- Football provider
+- Scoring engine
+- Settlement
+- Ranking
+- Notifications
+
+Do not assume documentation is correct if implementation differs.
+
+==================================================
+STEP 2 — BUILD AN END-TO-END TEST PLAN
+==================================================
+
+Create:
+
+/docs/19-end-to-end-test-plan.md
+
+The test plan must cover the complete application lifecycle.
+
+==================================================
+SCENARIO A — REGISTRATION
+==================================================
+
+Create 4 test users.
+
+Verify:
+
+- Registration succeeds.
+- Password is hashed.
+- JWT/login works.
+- Each user receives exactly 500 Coins.
+- Welcome bonus transaction exists.
+- Duplicate welcome bonus cannot occur.
+
+==================================================
+SCENARIO B — GAME JOIN
+==================================================
+
+Create/find a valid football fixture.
+
+Create or find a WAITING game.
+
+Join with all 4 users.
+
+Verify:
+
+- Each user pays exactly 500 Coins.
+- Each user becomes a participant.
+- No user can join the same game twice.
+- Fifth user cannot join.
+- A user with insufficient balance cannot join.
+- Wallet transactions are correct.
+
+==================================================
+SCENARIO C — DRAFT
+==================================================
+
+Run the Snake Draft.
+
+Verify:
+
+Round 1:
+
+P1 → P2 → P3 → P4
+
+Round 2:
+
+P4 → P3 → P2 → P1
+
+Verify:
+
+- 35 second turns.
+- Only current participant can select.
+- Exactly 2 selections per participant.
+- 8 unique football players.
+- Same football player cannot be selected twice.
+- Expired turn triggers deterministic auto-pick.
+- Auto-pick emits game:auto-pick.
+- Game moves to LIVE after draft completion.
+
+==================================================
+SCENARIO D — LIVE GAME
+==================================================
+
+Use available football provider/test data.
+
+Verify:
+
+- Fixture events are ingested.
+- Selected players receive normalized statistics.
+- Scoring engine calculates fantasy points.
+- Live rankings update.
+- Client cannot submit fantasy points manually.
+- Duplicate football events do not duplicate points.
+
+==================================================
+SCENARIO E — LATE JOIN
+==================================================
+
+Test joining a game while the real-world fixture is already LIVE.
+
+Verify:
+
+- Join is allowed while the room accepts players.
+- User pays 500 Coins.
+- User completes draft.
+- User receives FULL MATCH fantasy points.
+- Events that happened before joining are included.
+
+==================================================
+SCENARIO F — INCOMPLETE GAME
+==================================================
+
+Start a fixture with fewer than 4 participants.
+
+Verify:
+
+- Game becomes CANCELLED.
+- Every participant receives exactly +500 Coins refund.
+- Refund transaction exists.
+- No winner rewards.
+- No RP changes.
+- Duplicate cancellation does not duplicate refunds.
+
+==================================================
+SCENARIO G — MATCH CANCELLATION
+==================================================
+
+Cancel/postpone a fixture in a way that prevents completion.
+
+Verify:
+
+- Game becomes CANCELLED.
+- Every participant receives exactly +500 Coins refund.
+- No settlement.
+- No RP.
+- Notification is created.
+- Refund is idempotent.
+
+==================================================
+SCENARIO H — FINAL SETTLEMENT
+==================================================
+
+Finish a valid fixture.
+
+Verify final scoring.
+
+Rank participants using:
+
+1. Fantasy Points DESC
+2. Goals DESC
+3. Assists DESC
+4. participantId ASC
+
+Verify:
+
+1st:
+
++1000 Coins
++3 RP
+
+2nd:
+
++500 Coins
++1 RP
+
+3rd:
+
++0 Coins
+0 RP
+
+4th:
+
++0 Coins
+-1 RP
+
+Verify:
+
+- Entry fee is NOT deducted again.
+- Wallet reward happens exactly once.
+- RP happens exactly once.
+- Settlement happens exactly once.
+- game:finished emitted after successful settlement.
+- Final result endpoint returns correct results.
+
+==================================================
+SCENARIO I — REWARDED AD
+==================================================
+
+Test:
+
+Balance = 500
+
+Claim rewarded ad.
+
+Expected:
+
+❌ NOT_ELIGIBLE
+
+Then:
+
+Balance = 0
+
+Claim rewarded ad.
+
+Expected:
+
++500 Coins
+
+Verify:
+
+- Duplicate claim is protected.
+- Client cannot specify reward amount.
+- Server verifies balance.
+
+==================================================
+SCENARIO J — GLOBAL RANKING
+==================================================
+
+Verify:
+
+- RP is associated with correct season.
+- Leaderboard is correct.
+- Negative RP works.
+- Equal RP uses deterministic ordering.
+- Current user rank works.
+- Historical seasons remain available.
+
+==================================================
+SCENARIO K — NOTIFICATIONS
+==================================================
+
+Verify:
+
+- Game finished notification.
+- Game cancelled notification.
+- Refund notification.
+- Notification list.
+- Mark as read.
+- Mark all as read.
+- User cannot access another user's notifications.
+- Duplicate business operation does not duplicate notification.
+
+==================================================
+SCENARIO L — SECURITY
+==================================================
+
+Test IDOR and authorization:
+
+- User A accessing User B profile.
+- User A accessing User B wallet.
+- User A accessing User B notifications.
+- User A accessing private game of User B.
+- User A selecting during User B's draft turn.
+- User A selecting a player for User B.
+- Client submitting fake fantasy points.
+- Client submitting fake reward amount.
+- Client submitting fake wallet balance.
+
+All must fail safely.
+
+==================================================
+SCENARIO M — CONCURRENCY
+==================================================
+
+Test concurrent requests for:
+
+- Two users joining the final available game slot.
+- Two users selecting the same player.
+- Duplicate game join.
+- Duplicate refund.
+- Duplicate settlement.
+- Duplicate rewarded-ad claim.
+
+Verify database transactions and unique constraints prevent inconsistent state.
+
+==================================================
+SCENARIO N — API CONTRACT
+==================================================
+
+Run through all implemented endpoints.
+
+Verify:
+
+- HTTP methods.
+- Authentication.
+- Authorization.
+- Validation.
+- Response structure.
+- Error structure.
+- Pagination.
+- UI-required fields.
+
+Compare against:
+
+/docs/15-api-reference.md
+
+==================================================
+SCENARIO O — SOCKET.IO
+==================================================
+
+Verify:
+
+- Authentication.
+- Private user rooms.
+- Game rooms.
+- Authorization.
+- game:state
+- game:draft-turn
+- game:player-selected
+- game:auto-pick
+- game:live-event
+- game:ranking
+- game:finished
+- wallet:updated
+- notification:new
+- ranking:updated
+
+Verify events are emitted only to authorized recipients.
+
+==================================================
+STEP 3 — AUTOMATED TESTS
+==================================================
+
+Implement missing automated tests required for the scenarios above.
+
+Use the existing testing framework.
+
+Do NOT introduce a new testing framework unless absolutely necessary.
+
+Prefer integration tests for:
+
+- Auth
+- Wallet
+- Games
+- Draft
+- Settlement
+- Ranking
+- Notifications
+
+==================================================
+STEP 4 — FIX ONLY REAL BUGS
+==================================================
+
+If tests reveal bugs:
+
+Fix them.
+
+Do NOT rewrite working architecture.
+
+Do NOT change confirmed business rules.
+
+Do NOT add speculative features.
+
+==================================================
+STEP 5 — API FOOTBALL
+==================================================
+
+The API-Football integration already exists.
+
+Do NOT replace it.
+
+Do NOT create a new provider.
+
+Verify configuration through environment variables.
+
+If a real API key is required to execute a live integration test and the key is missing:
+
+DO NOT invent one.
+
+Do NOT hardcode one.
+
+Mark the integration test as:
+
+BLOCKED — API_FOOTBALL_KEY not configured.
+
+Continue testing all other backend functionality.
+
+==================================================
+STEP 6 — FINAL REPORT
+==================================================
+
+Create:
+
+/docs/20-e2e-test-report.md
+
+Include:
+
+- Total tests
+- Passed
+- Failed
+- Blocked
+- Bugs fixed
+- Security issues
+- Concurrency issues
+- API issues
+- Socket issues
+- Remaining limitations
+
+When complete report exactly:
+
+"PHASE 17 E2E VALIDATION COMPLETE"
+
+Then summarize the results.

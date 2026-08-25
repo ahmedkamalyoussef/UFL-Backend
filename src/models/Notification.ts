@@ -1,7 +1,19 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/database';
 
-export type NotificationType = 'WELCOME_BONUS' | 'MATCH_STARTING' | 'GAME_RESULT' | 'WALLET_UPDATE';
+export type NotificationType =
+  | 'WELCOME_BONUS'
+  | 'MATCH_STARTING'
+  | 'GAME_RESULT'
+  | 'WALLET_UPDATE'
+  | 'GAME_JOINED'
+  | 'GAME_STARTED'
+  | 'GAME_FINISHED'
+  | 'GAME_CANCELLED'
+  | 'GAME_REFUNDED'
+  | 'RANKING_UPDATED'
+  | 'SEASON_STARTED'
+  | 'SYSTEM';
 
 export interface NotificationAttributes {
   id: string;
@@ -10,19 +22,31 @@ export interface NotificationAttributes {
   message: string;
   type: NotificationType;
   isRead: boolean;
+  readAt?: Date | null;
+  relatedEntityType?: string | null;
+  relatedEntityId?: string | null;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-export type NotificationCreationAttributes = Optional<NotificationAttributes, 'id' | 'isRead' | 'createdAt' | 'updatedAt'>;
+export type NotificationCreationAttributes = Optional<
+  NotificationAttributes,
+  'id' | 'isRead' | 'readAt' | 'relatedEntityType' | 'relatedEntityId' | 'createdAt' | 'updatedAt'
+>;
 
-export class Notification extends Model<NotificationAttributes, NotificationCreationAttributes> implements NotificationAttributes {
+export class Notification
+  extends Model<NotificationAttributes, NotificationCreationAttributes>
+  implements NotificationAttributes
+{
   public id!: string;
   public userId!: string;
   public title!: string;
   public message!: string;
   public type!: NotificationType;
   public isRead!: boolean;
+  public readAt!: Date | null;
+  public relatedEntityType!: string | null;
+  public relatedEntityId!: string | null;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -52,13 +76,38 @@ Notification.init(
       allowNull: false,
     },
     type: {
-      type: DataTypes.ENUM('WELCOME_BONUS', 'MATCH_STARTING', 'GAME_RESULT', 'WALLET_UPDATE'),
+      type: DataTypes.ENUM(
+        'WELCOME_BONUS',
+        'MATCH_STARTING',
+        'GAME_RESULT',
+        'WALLET_UPDATE',
+        'GAME_JOINED',
+        'GAME_STARTED',
+        'GAME_FINISHED',
+        'GAME_CANCELLED',
+        'GAME_REFUNDED',
+        'RANKING_UPDATED',
+        'SEASON_STARTED',
+        'SYSTEM'
+      ),
       allowNull: false,
     },
     isRead: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
+    },
+    readAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
+    relatedEntityType: {
+      type: DataTypes.STRING(50),
+      allowNull: true,
+    },
+    relatedEntityId: {
+      type: DataTypes.STRING(100),
+      allowNull: true,
     },
   },
   {
@@ -68,6 +117,7 @@ Notification.init(
     indexes: [
       { fields: ['userId'] },
       { fields: ['isRead'] },
+      { fields: ['userId', 'type', 'relatedEntityId'] },
     ],
   }
 );

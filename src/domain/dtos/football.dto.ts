@@ -37,7 +37,7 @@ export interface FixtureDTO {
   homeScore: number;
   awayScore: number;
   elapsed: number;
-  status: 'SCHEDULED' | 'LIVE' | 'HALFTIME' | 'FINISHED' | 'CANCELLED';
+  status: 'SCHEDULED' | 'LIVE' | 'HALFTIME' | 'FINISHED' | 'CANCELLED' | 'SUSPENDED' | 'POSTPONED';
   startTime: Date;
 }
 

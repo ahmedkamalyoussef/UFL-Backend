@@ -44,6 +44,13 @@ class SocketServer {
       const userId = socket.user?.userId;
       console.log(`[Socket.IO] Client connected: socketId=${socket.id}, userId=${userId}`);
 
+      if (userId) {
+        // Automatically join private user room user:{userId}
+        const userRoom = `user:${userId}`;
+        socket.join(userRoom);
+        console.log(`[Socket.IO] User ${userId} joined private room ${userRoom}`);
+      }
+
       socket.on('game:join-room', async ({ gameId }: { gameId: string }) => {
         try {
           if (!gameId || !userId) return;
@@ -86,10 +93,16 @@ class SocketServer {
     return this.io;
   }
 
-  // Helper broadcast functions
+  // Broadcast to game room
   public broadcastToRoom(gameId: string, event: string, payload: any): void {
     if (!this.io) return;
     this.io.of('/game').to(`game:${gameId}`).emit(event, payload);
+  }
+
+  // Send to private user room
+  public sendToUser(userId: string, event: string, payload: any): void {
+    if (!this.io) return;
+    this.io.of('/game').to(`user:${userId}`).emit(event, payload);
   }
 }
 

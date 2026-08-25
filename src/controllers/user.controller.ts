@@ -13,4 +13,17 @@ export class UserController {
       next(error);
     }
   }
+
+  public static async getGameHistory(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const userId = req.user!.userId;
+      const page = req.query.page ? parseInt(req.query.page as string, 10) : 1;
+      const limit = req.query.limit ? parseInt(req.query.limit as string, 10) : 20;
+
+      const history = await UserService.getUserGameHistory(userId, page, limit);
+      sendSuccess(res, history, 200);
+    } catch (error) {
+      next(error);
+    }
+  }
 }

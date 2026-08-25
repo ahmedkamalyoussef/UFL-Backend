@@ -1,23 +1,27 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { sequelize } from '../config/database';
 
+export type SeasonStatus = 'UPCOMING' | 'ACTIVE' | 'COMPLETED';
+
 export interface SeasonAttributes {
   id: string;
   name: string;
   startDate: Date;
   endDate: Date;
+  status: SeasonStatus;
   isActive: boolean;
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-export type SeasonCreationAttributes = Optional<SeasonAttributes, 'id' | 'isActive' | 'createdAt' | 'updatedAt'>;
+export type SeasonCreationAttributes = Optional<SeasonAttributes, 'id' | 'status' | 'isActive' | 'createdAt' | 'updatedAt'>;
 
 export class Season extends Model<SeasonAttributes, SeasonCreationAttributes> implements SeasonAttributes {
   public id!: string;
   public name!: string;
   public startDate!: Date;
   public endDate!: Date;
+  public status!: SeasonStatus;
   public isActive!: boolean;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -42,6 +46,11 @@ Season.init(
       type: DataTypes.DATE,
       allowNull: false,
     },
+    status: {
+      type: DataTypes.ENUM('UPCOMING', 'ACTIVE', 'COMPLETED'),
+      allowNull: false,
+      defaultValue: 'ACTIVE',
+    },
     isActive: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
@@ -53,6 +62,7 @@ Season.init(
     tableName: 'seasons',
     timestamps: true,
     indexes: [
+      { fields: ['status'] },
       { fields: ['isActive'] },
     ],
   }

@@ -1,5 +1,6 @@
 import { sequelize } from '../config/database';
 import { Game, GameParticipant, Wallet, WalletTransaction, Fixture, Competition, Team, User } from '../models';
+import { NotificationService } from './notification.service';
 import { isSupportedCompetition } from '../domain/competitions';
 
 export class GameService {
@@ -295,6 +296,19 @@ export class GameService {
             );
 
             refundedCount++;
+
+            // Create persistent GAME_CANCELLED & GAME_REFUNDED notifications
+            await NotificationService.createNotification(
+              {
+                userId: participant.userId,
+                type: 'GAME_CANCELLED',
+                title: 'Game Cancelled',
+                message: `Your game room was cancelled. Your ${game.entryFee} Coins entry fee has been refunded.`,
+                relatedEntityType: 'GAME',
+                relatedEntityId: gameId,
+              },
+              t
+            );
           }
         }
       }
