@@ -1,6 +1,7 @@
 import { sequelize } from '../config/database';
 import { Game, GameParticipant, Wallet, WalletTransaction, Fixture, Competition, Team, User } from '../models';
 import { NotificationService } from './notification.service';
+import { DraftService } from './draft.service';
 import { isSupportedCompetition } from '../domain/competitions';
 
 export class GameService {
@@ -228,8 +229,27 @@ export class GameService {
         { transaction: t }
       );
 
-      // 7. Status transition to DRAFTING if room full and fixture is SCHEDULED
-      if (existingParticipants.length + 1 === 4 && (!fixture || fixture.status === 'SCHEDULED')) {
+      // MVP Hack: Auto-fill with 3 bots to start draft immediately
+      const currentCount = existingParticipants.length + 1;
+      if (currentCount === 1) {
+        // Assume users with IDs 2, 3, 4 are bots
+        for (let i = 2; i <= 4; i++) {
+          await GameParticipant.create(
+            { gameId, userId: i.toString(), draftPosition: i, totalPoints: 0.0 },
+            { transaction: t }
+          );
+        }
+        
+        // Change status to DRAFTING
+        game.status = 'DRAFTING';
+        await game.save({ transaction: t });
+
+        // Start draft automatically after transaction commits
+        // (DraftService.startDraft handles transaction internally, so we call it outside or just schedule it)
+        setTimeout(() => {
+          DraftService.startDraft(gameId).catch(e => console.error('Failed to auto-start draft:', e));
+        }, 1000);
+      } else if (currentCount === 4 && (!fixture || fixture.status === 'SCHEDULED')) {
         game.status = 'DRAFTING';
         await game.save({ transaction: t });
       }

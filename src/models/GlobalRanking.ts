@@ -19,15 +19,15 @@ export type GlobalRankingCreationAttributes = Optional<
 >;
 
 export class GlobalRanking extends Model<GlobalRankingAttributes, GlobalRankingCreationAttributes> implements GlobalRankingAttributes {
-  public id!: string;
-  public seasonId!: string;
-  public userId!: string;
-  public rankingPoints!: number;
-  public gamesPlayed!: number;
-  public gamesWon!: number;
-  public rankPosition!: number | null;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  declare id!: string;
+  declare seasonId!: string;
+  declare userId!: string;
+  declare rankingPoints!: number;
+  declare gamesPlayed!: number;
+  declare gamesWon!: number;
+  declare rankPosition!: number | null;
+  declare createdAt!: Date;
+  declare updatedAt!: Date;
 }
 
 GlobalRanking.init(

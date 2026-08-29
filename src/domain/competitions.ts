@@ -1,4 +1,4 @@
-export type SupportedCompetitionCode = 'EPL' | 'LALIGA' | 'SPL' | 'UCL' | 'ACL';
+export type SupportedCompetitionCode = 'EPL' | 'LALIGA' | 'SPL' | 'UCL' | 'ACL' | 'EGY';
 
 export interface SupportedCompetitionMetadata {
   code: SupportedCompetitionCode;
@@ -44,9 +44,16 @@ export const SUPPORTED_COMPETITIONS: Record<SupportedCompetitionCode, SupportedC
     country: 'World',
     logoUrl: 'https://media.api-sports.io/football/leagues/17.png',
   },
+  EGY: {
+    code: 'EGY',
+    name: 'Egyptian Premier League',
+    externalId: 73,
+    country: 'Egypt',
+    logoUrl: 'https://media.api-sports.io/football/leagues/73.png',
+  },
 };
 
-export const SUPPORTED_COMPETITION_CODES: SupportedCompetitionCode[] = ['EPL', 'LALIGA', 'SPL', 'UCL', 'ACL'];
+export const SUPPORTED_COMPETITION_CODES: SupportedCompetitionCode[] = ['EPL', 'LALIGA', 'SPL', 'UCL', 'ACL', 'EGY'];
 
 export function isSupportedCompetition(code: string): code is SupportedCompetitionCode {
   return SUPPORTED_COMPETITION_CODES.includes(code as SupportedCompetitionCode);

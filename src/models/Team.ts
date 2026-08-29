@@ -15,14 +15,14 @@ export interface TeamAttributes {
 export type TeamCreationAttributes = Optional<TeamAttributes, 'id' | 'createdAt' | 'updatedAt'>;
 
 export class Team extends Model<TeamAttributes, TeamCreationAttributes> implements TeamAttributes {
-  public id!: string;
-  public externalId!: number;
-  public competitionId!: string;
-  public name!: string;
-  public code!: string;
-  public logoUrl!: string;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  declare id!: string;
+  declare externalId!: number;
+  declare competitionId!: string;
+  declare name!: string;
+  declare code!: string;
+  declare logoUrl!: string;
+  declare createdAt!: Date;
+  declare updatedAt!: Date;
 }
 
 Team.init(

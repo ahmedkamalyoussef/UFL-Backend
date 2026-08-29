@@ -16,13 +16,13 @@ export interface FixtureEventAttributes {
 export type FixtureEventCreationAttributes = Optional<FixtureEventAttributes, 'id' | 'playerId' | 'detail' | 'createdAt'>;
 
 export class FixtureEvent extends Model<FixtureEventAttributes, FixtureEventCreationAttributes> implements FixtureEventAttributes {
-  public id!: string;
-  public fixtureId!: string;
-  public playerId!: string | null;
-  public eventType!: FixtureEventType;
-  public minute!: number;
-  public detail!: string | null;
-  public readonly createdAt!: Date;
+  declare id!: string;
+  declare fixtureId!: string;
+  declare playerId!: string | null;
+  declare eventType!: FixtureEventType;
+  declare minute!: number;
+  declare detail!: string | null;
+  declare createdAt!: Date;
 }
 
 FixtureEvent.init(

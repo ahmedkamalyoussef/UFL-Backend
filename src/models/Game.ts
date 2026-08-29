@@ -16,13 +16,13 @@ export interface GameAttributes {
 export type GameCreationAttributes = Optional<GameAttributes, 'id' | 'status' | 'entryFee' | 'currentDraftTurn' | 'createdAt' | 'finishedAt'>;
 
 export class Game extends Model<GameAttributes, GameCreationAttributes> implements GameAttributes {
-  public id!: string;
-  public fixtureId!: string;
-  public status!: GameStatus;
-  public entryFee!: number;
-  public currentDraftTurn!: number;
-  public readonly createdAt!: Date;
-  public finishedAt!: Date | null;
+  declare id!: string;
+  declare fixtureId!: string;
+  declare status!: GameStatus;
+  declare entryFee!: number;
+  declare currentDraftTurn!: number;
+  declare createdAt!: Date;
+  declare finishedAt!: Date | null;
 }
 
 Game.init(

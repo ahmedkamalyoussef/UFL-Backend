@@ -38,17 +38,17 @@ export class Notification
   extends Model<NotificationAttributes, NotificationCreationAttributes>
   implements NotificationAttributes
 {
-  public id!: string;
-  public userId!: string;
-  public title!: string;
-  public message!: string;
-  public type!: NotificationType;
-  public isRead!: boolean;
-  public readAt!: Date | null;
-  public relatedEntityType!: string | null;
-  public relatedEntityId!: string | null;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  declare id!: string;
+  declare userId!: string;
+  declare title!: string;
+  declare message!: string;
+  declare type!: NotificationType;
+  declare isRead!: boolean;
+  declare readAt!: Date | null;
+  declare relatedEntityType!: string | null;
+  declare relatedEntityId!: string | null;
+  declare createdAt!: Date;
+  declare updatedAt!: Date;
 }
 
 Notification.init(

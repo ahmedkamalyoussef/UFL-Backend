@@ -16,13 +16,13 @@ export interface WalletTransactionAttributes {
 export type WalletTransactionCreationAttributes = Optional<WalletTransactionAttributes, 'id' | 'referenceId' | 'createdAt'>;
 
 export class WalletTransaction extends Model<WalletTransactionAttributes, WalletTransactionCreationAttributes> implements WalletTransactionAttributes {
-  public id!: string;
-  public walletId!: string;
-  public amount!: number;
-  public type!: WalletTransactionType;
-  public referenceId!: string | null;
-  public description!: string;
-  public readonly createdAt!: Date;
+  declare id!: string;
+  declare walletId!: string;
+  declare amount!: number;
+  declare type!: WalletTransactionType;
+  declare referenceId!: string | null;
+  declare description!: string;
+  declare createdAt!: Date;
 }
 
 WalletTransaction.init(

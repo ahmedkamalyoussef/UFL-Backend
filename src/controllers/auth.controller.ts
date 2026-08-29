@@ -6,6 +6,8 @@ import { sendSuccess } from '../utils/response';
 export class AuthController {
   public static async register(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
+      console.log(req.body);
+
       const validatedInput = registerSchema.parse(req.body);
       const data = await AuthService.register(validatedInput);
       sendSuccess(res, data, 201);

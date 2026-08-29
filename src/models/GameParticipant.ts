@@ -19,15 +19,15 @@ export type GameParticipantCreationAttributes = Optional<
 >;
 
 export class GameParticipant extends Model<GameParticipantAttributes, GameParticipantCreationAttributes> implements GameParticipantAttributes {
-  public id!: string;
-  public gameId!: string;
-  public userId!: string;
-  public draftPosition!: number;
-  public totalPoints!: number;
-  public finalRank!: number | null;
-  public coinReward!: number | null;
-  public rpChange!: number | null;
-  public readonly joinedAt!: Date;
+  declare id!: string;
+  declare gameId!: string;
+  declare userId!: string;
+  declare draftPosition!: number;
+  declare totalPoints!: number;
+  declare finalRank!: number | null;
+  declare coinReward!: number | null;
+  declare rpChange!: number | null;
+  declare joinedAt!: Date;
 }
 
 GameParticipant.init(

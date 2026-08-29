@@ -19,16 +19,16 @@ export interface PlayerAttributes {
 export type PlayerCreationAttributes = Optional<PlayerAttributes, 'id' | 'isStar' | 'avgPoints' | 'createdAt' | 'updatedAt'>;
 
 export class Player extends Model<PlayerAttributes, PlayerCreationAttributes> implements PlayerAttributes {
-  public id!: string;
-  public externalId!: number;
-  public teamId!: string;
-  public name!: string;
-  public position!: FootballPosition;
-  public photoUrl!: string;
-  public isStar!: boolean;
-  public avgPoints!: number;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  declare id!: string;
+  declare externalId!: number;
+  declare teamId!: string;
+  declare name!: string;
+  declare position!: FootballPosition;
+  declare photoUrl!: string;
+  declare isStar!: boolean;
+  declare avgPoints!: number;
+  declare createdAt!: Date;
+  declare updatedAt!: Date;
 }
 
 Player.init(

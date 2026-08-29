@@ -18,15 +18,15 @@ export interface DraftTurnAttributes {
 export type DraftTurnCreationAttributes = Optional<DraftTurnAttributes, 'id' | 'status' | 'createdAt' | 'updatedAt'>;
 
 export class DraftTurn extends Model<DraftTurnAttributes, DraftTurnCreationAttributes> implements DraftTurnAttributes {
-  public id!: string;
-  public gameId!: string;
-  public turnNumber!: number;
-  public round!: number;
-  public participantId!: string;
-  public expiresAt!: Date;
-  public status!: DraftTurnStatus;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  declare id!: string;
+  declare gameId!: string;
+  declare turnNumber!: number;
+  declare round!: number;
+  declare participantId!: string;
+  declare expiresAt!: Date;
+  declare status!: DraftTurnStatus;
+  declare createdAt!: Date;
+  declare updatedAt!: Date;
 }
 
 DraftTurn.init(

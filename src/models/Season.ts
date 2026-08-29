@@ -17,14 +17,14 @@ export interface SeasonAttributes {
 export type SeasonCreationAttributes = Optional<SeasonAttributes, 'id' | 'status' | 'isActive' | 'createdAt' | 'updatedAt'>;
 
 export class Season extends Model<SeasonAttributes, SeasonCreationAttributes> implements SeasonAttributes {
-  public id!: string;
-  public name!: string;
-  public startDate!: Date;
-  public endDate!: Date;
-  public status!: SeasonStatus;
-  public isActive!: boolean;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  declare id!: string;
+  declare name!: string;
+  declare startDate!: Date;
+  declare endDate!: Date;
+  declare status!: SeasonStatus;
+  declare isActive!: boolean;
+  declare createdAt!: Date;
+  declare updatedAt!: Date;
 }
 
 Season.init(

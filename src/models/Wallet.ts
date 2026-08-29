@@ -13,12 +13,12 @@ export interface WalletAttributes {
 export type WalletCreationAttributes = Optional<WalletAttributes, 'id' | 'balance' | 'careerCoins' | 'createdAt' | 'updatedAt'>;
 
 export class Wallet extends Model<WalletAttributes, WalletCreationAttributes> implements WalletAttributes {
-  public id!: string;
-  public userId!: string;
-  public balance!: number;
-  public careerCoins!: number;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  declare id!: string;
+  declare userId!: string;
+  declare balance!: number;
+  declare careerCoins!: number;
+  declare createdAt!: Date;
+  declare updatedAt!: Date;
 
   public get isEligibleForRewardedAd(): boolean {
     return this.balance === 0;

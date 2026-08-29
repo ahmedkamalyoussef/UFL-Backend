@@ -14,13 +14,13 @@ export interface PlayerSelectionAttributes {
 export type PlayerSelectionCreationAttributes = Optional<PlayerSelectionAttributes, 'id' | 'isAutoPick' | 'selectedAt'>;
 
 export class PlayerSelection extends Model<PlayerSelectionAttributes, PlayerSelectionCreationAttributes> implements PlayerSelectionAttributes {
-  public id!: string;
-  public gameId!: string;
-  public participantId!: string;
-  public playerId!: string;
-  public turnNumber!: number;
-  public isAutoPick!: boolean;
-  public readonly selectedAt!: Date;
+  declare id!: string;
+  declare gameId!: string;
+  declare participantId!: string;
+  declare playerId!: string;
+  declare turnNumber!: number;
+  declare isAutoPick!: boolean;
+  declare selectedAt!: Date;
 }
 
 PlayerSelection.init(

@@ -21,18 +21,18 @@ export interface FixtureAttributes {
 export type FixtureCreationAttributes = Optional<FixtureAttributes, 'id' | 'homeScore' | 'awayScore' | 'elapsed' | 'status' | 'createdAt' | 'updatedAt'>;
 
 export class Fixture extends Model<FixtureAttributes, FixtureCreationAttributes> implements FixtureAttributes {
-  public id!: string;
-  public externalId!: number;
-  public competitionId!: string;
-  public homeTeamId!: string;
-  public awayTeamId!: string;
-  public homeScore!: number;
-  public awayScore!: number;
-  public elapsed!: number;
-  public status!: FixtureStatus;
-  public startTime!: Date;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  declare id!: string;
+  declare externalId!: number;
+  declare competitionId!: string;
+  declare homeTeamId!: string;
+  declare awayTeamId!: string;
+  declare homeScore!: number;
+  declare awayScore!: number;
+  declare elapsed!: number;
+  declare status!: FixtureStatus;
+  declare startTime!: Date;
+  declare createdAt!: Date;
+  declare updatedAt!: Date;
 }
 
 Fixture.init(

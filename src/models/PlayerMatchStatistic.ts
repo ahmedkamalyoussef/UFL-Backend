@@ -41,23 +41,23 @@ export type PlayerMatchStatisticCreationAttributes = Optional<
 >;
 
 export class PlayerMatchStatistic extends Model<PlayerMatchStatisticAttributes, PlayerMatchStatisticCreationAttributes> implements PlayerMatchStatisticAttributes {
-  public id!: string;
-  public fixtureId!: string;
-  public playerId!: string;
-  public goals!: number;
-  public assists!: number;
-  public bigChancesCreated!: number;
-  public successfulPasses!: number;
-  public failedPasses!: number;
-  public tackles!: number;
-  public yellowCards!: number;
-  public redCards!: number;
-  public cleanSheet!: boolean;
-  public saves!: number;
-  public minutesPlayed!: number;
-  public totalFantasyPoints!: number;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  declare id!: string;
+  declare fixtureId!: string;
+  declare playerId!: string;
+  declare goals!: number;
+  declare assists!: number;
+  declare bigChancesCreated!: number;
+  declare successfulPasses!: number;
+  declare failedPasses!: number;
+  declare tackles!: number;
+  declare yellowCards!: number;
+  declare redCards!: number;
+  declare cleanSheet!: boolean;
+  declare saves!: number;
+  declare minutesPlayed!: number;
+  declare totalFantasyPoints!: number;
+  declare createdAt!: Date;
+  declare updatedAt!: Date;
 }
 
 PlayerMatchStatistic.init(

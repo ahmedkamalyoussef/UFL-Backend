@@ -16,13 +16,13 @@ export interface CompetitionAttributes {
 export type CompetitionCreationAttributes = Optional<CompetitionAttributes, 'id' | 'logoUrl' | 'createdAt' | 'updatedAt'>;
 
 export class Competition extends Model<CompetitionAttributes, CompetitionCreationAttributes> implements CompetitionAttributes {
-  public id!: string;
-  public externalId!: number;
-  public name!: string;
-  public code!: CompetitionCode;
-  public logoUrl!: string | null;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  declare id!: string;
+  declare externalId!: number;
+  declare name!: string;
+  declare code!: CompetitionCode;
+  declare logoUrl!: string | null;
+  declare createdAt!: Date;
+  declare updatedAt!: Date;
 }
 
 Competition.init(
