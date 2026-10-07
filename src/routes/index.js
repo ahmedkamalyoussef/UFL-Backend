@@ -1,0 +1,25 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const auth_routes_1 = __importDefault(require("./auth.routes"));
+const user_routes_1 = __importDefault(require("./user.routes"));
+const wallet_routes_1 = __importDefault(require("./wallet.routes"));
+const football_routes_1 = require("./football.routes");
+const game_routes_1 = __importDefault(require("./game.routes"));
+const sync_routes_1 = __importDefault(require("./sync.routes"));
+const ranking_routes_1 = __importDefault(require("./ranking.routes"));
+const notification_routes_1 = __importDefault(require("./notification.routes"));
+const router = (0, express_1.Router)();
+router.use('/auth', auth_routes_1.default);
+router.use('/', user_routes_1.default);
+router.use('/wallet', wallet_routes_1.default);
+router.use('/competitions', football_routes_1.competitionsRouter);
+router.use('/matches', football_routes_1.matchesRouter);
+router.use('/games', game_routes_1.default);
+router.use('/sync', sync_routes_1.default);
+router.use('/', ranking_routes_1.default);
+router.use('/', notification_routes_1.default);
+exports.default = router;
