@@ -2,12 +2,11 @@
   "name": "ufl-backend",
   "version": "1.0.0",
   "description": "UFL Live Fantasy Football Platform Backend Service",
-  "main": "dist/server.js",
+  "main": "src/server.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "build": "tsc",
-    "start": "node dist/server.js",
-    "db:migrate": "ts-node src/scripts/run-migrations.ts"
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "db:migrate": "node src/scripts/run-migrations.js"
   },
   "keywords": [
     "ufl",

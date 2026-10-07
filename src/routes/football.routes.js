@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.matchesRouter = exports.competitionsRouter = void 0;
+const express_1 = require("express");
+const football_controller_1 = require("../controllers/football.controller");
+exports.competitionsRouter = (0, express_1.Router)();
+exports.competitionsRouter.get('/', football_controller_1.FootballController.getCompetitions);
+exports.matchesRouter = (0, express_1.Router)();
+exports.matchesRouter.get('/', football_controller_1.FootballController.getMatches);
+exports.matchesRouter.get('/:id', football_controller_1.FootballController.getMatchById);

@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const draft_controller_1 = require("../controllers/draft.controller");
+const auth_middleware_1 = require("../middleware/auth.middleware");
+const router = (0, express_1.Router)({ mergeParams: true });
+router.get('/draft', auth_middleware_1.authenticate, draft_controller_1.DraftController.getDraftState);
+router.post('/draft/start', draft_controller_1.DraftController.startDraft);
+router.post('/draft/select', auth_middleware_1.authenticate, draft_controller_1.DraftController.selectPlayer);
+exports.default = router;
