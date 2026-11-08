@@ -140,7 +140,8 @@ class AdController {
 
             const videoUrl = `/uploads/videos/${req.file.filename}`;
             (0, response_1.sendSuccess)(res, {
-                videoUrl,
+                url: videoUrl,
+                videoUrl: videoUrl,
                 originalName: req.file.originalname,
                 size: req.file.size,
                 mimetype: req.file.mimetype,
