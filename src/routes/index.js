@@ -12,10 +12,13 @@ const game_routes_1 = __importDefault(require("./game.routes"));
 const sync_routes_1 = __importDefault(require("./sync.routes"));
 const ranking_routes_1 = __importDefault(require("./ranking.routes"));
 const notification_routes_1 = __importDefault(require("./notification.routes"));
+const ad_routes_1 = __importDefault(require("./ad.routes"));
+
 const router = (0, express_1.Router)();
 router.use('/auth', auth_routes_1.default);
 router.use('/', user_routes_1.default);
 router.use('/wallet', wallet_routes_1.default);
+router.use('/ads', ad_routes_1.default);
 router.use('/competitions', football_routes_1.competitionsRouter);
 router.use('/matches', football_routes_1.matchesRouter);
 router.use('/games', game_routes_1.default);

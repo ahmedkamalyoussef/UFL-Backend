@@ -14,7 +14,9 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Notification = exports.GlobalRanking = exports.Season = exports.PlayerSelection = exports.DraftTurn = exports.GameParticipant = exports.Game = exports.PlayerMatchStatistic = exports.FixtureEvent = exports.Fixture = exports.Player = exports.Team = exports.Competition = exports.WalletTransaction = exports.Wallet = exports.User = void 0;
+exports.Ad = exports.Notification = exports.GlobalRanking = exports.Season = exports.PlayerSelection = exports.DraftTurn = exports.GameParticipant = exports.Game = exports.PlayerMatchStatistic = exports.FixtureEvent = exports.Fixture = exports.Player = exports.Team = exports.Competition = exports.WalletTransaction = exports.Wallet = exports.User = void 0;
+const Ad_1 = require("./Ad");
+Object.defineProperty(exports, "Ad", { enumerable: true, get: function () { return Ad_1.Ad; } });
 const User_1 = require("./User");
 Object.defineProperty(exports, "User", { enumerable: true, get: function () { return User_1.User; } });
 const Wallet_1 = require("./Wallet");

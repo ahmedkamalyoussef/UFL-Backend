@@ -5,7 +5,7 @@ const models_1 = require("../models");
 class UserService {
     static async getUserProfile(userId) {
         const user = await models_1.User.findByPk(userId, {
-            attributes: ['id', 'username', 'email', 'avatarUrl', 'createdAt'],
+            attributes: ['id', 'username', 'email', 'avatarUrl', 'role', 'createdAt'],
             include: [
                 {
                     model: models_1.Wallet,
@@ -24,6 +24,7 @@ class UserService {
             username: user.username,
             email: user.email,
             avatarUrl: user.avatarUrl,
+            role: user.role,
             createdAt: user.createdAt,
             wallet: wallet
                 ? {
@@ -46,6 +47,15 @@ class UserService {
                     rankPosition: 1,
                 },
         };
+    }
+    static async updateAvatar(userId, avatarUrl) {
+        const user = await models_1.User.findByPk(userId);
+        if (!user) {
+            throw { code: 'USER_NOT_FOUND', message: 'User not found', statusCode: 404 };
+        }
+        user.avatarUrl = avatarUrl;
+        await user.save();
+        return this.getUserProfile(userId);
     }
     static async getUserGameHistory(userId, page = 1, limit = 20) {
         const offset = (page - 1) * limit;

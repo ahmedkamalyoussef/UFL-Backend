@@ -29,6 +29,7 @@ class AuthService {
                 username: input.username,
                 email: input.email,
                 passwordHash,
+                role: 'user',
             }, { transaction: t });
             // 2. Create User Wallet initialized with 500 Coins
             const wallet = await models_1.Wallet.create({
@@ -46,7 +47,7 @@ class AuthService {
             }, { transaction: t });
             return { user, wallet };
         });
-        const token = (0, jwt_1.generateToken)({ userId: result.user.id, email: result.user.email });
+        const token = (0, jwt_1.generateToken)({ userId: result.user.id, email: result.user.email, role: result.user.role });
         return {
             token,
             user: {
@@ -54,6 +55,7 @@ class AuthService {
                 username: result.user.username,
                 email: result.user.email,
                 avatarUrl: result.user.avatarUrl,
+                role: result.user.role,
             },
             wallet: {
                 balance: result.wallet.balance,
@@ -72,7 +74,7 @@ class AuthService {
             throw { code: 'INVALID_CREDENTIALS', message: 'Invalid email or password', statusCode: 401 };
         }
         const wallet = await models_1.Wallet.findOne({ where: { userId: user.id } });
-        const token = (0, jwt_1.generateToken)({ userId: user.id, email: user.email });
+        const token = (0, jwt_1.generateToken)({ userId: user.id, email: user.email, role: user.role });
         return {
             token,
             user: {
@@ -80,6 +82,7 @@ class AuthService {
                 username: user.username,
                 email: user.email,
                 avatarUrl: user.avatarUrl,
+                role: user.role,
             },
             wallet: wallet
                 ? {

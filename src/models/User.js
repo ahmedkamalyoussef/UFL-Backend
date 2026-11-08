@@ -36,6 +36,11 @@ User.init({
         type: sequelize_1.DataTypes.STRING(255),
         allowNull: true,
     },
+    role: {
+        type: sequelize_1.DataTypes.ENUM('admin', 'user'),
+        allowNull: false,
+        defaultValue: 'user',
+    },
 }, {
     sequelize: database_1.sequelize,
     tableName: 'users',

@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.authenticate = authenticate;
+exports.requireAdmin = requireAdmin;
 const jwt_1 = require("../utils/jwt");
 const response_1 = require("../utils/response");
+
 function authenticate(req, res, next) {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -19,4 +21,16 @@ function authenticate(req, res, next) {
         (0, response_1.sendError)(res, 'UNAUTHORIZED', 'Invalid or expired token', 401);
         return;
     }
+}
+
+function requireAdmin(req, res, next) {
+    if (!req.user) {
+        (0, response_1.sendError)(res, 'UNAUTHORIZED', 'Authentication token required', 401);
+        return;
+    }
+    if (req.user.role !== 'admin') {
+        (0, response_1.sendError)(res, 'FORBIDDEN', 'Admin privileges required', 403);
+        return;
+    }
+    next();
 }

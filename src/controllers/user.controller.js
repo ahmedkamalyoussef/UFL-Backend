@@ -26,5 +26,20 @@ class UserController {
             next(error);
         }
     }
+    static async updateAvatar(req, res, next) {
+        try {
+            const userId = req.user.userId;
+            const { avatarUrl } = req.body;
+            if (!avatarUrl) {
+                res.status(400).json({ success: false, message: 'avatarUrl is required' });
+                return;
+            }
+            const updated = await user_service_1.UserService.updateAvatar(userId, avatarUrl);
+            (0, response_1.sendSuccess)(res, updated, 200);
+        }
+        catch (error) {
+            next(error);
+        }
+    }
 }
 exports.UserController = UserController;
