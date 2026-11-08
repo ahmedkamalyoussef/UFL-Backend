@@ -57,3 +57,4 @@ router.put('/:id', auth_middleware_1.authenticate, auth_middleware_1.requireAdmi
 router.delete('/:id', auth_middleware_1.authenticate, auth_middleware_1.requireAdmin, ad_controller_1.AdController.deleteAd);
 
 exports.default = router;
+

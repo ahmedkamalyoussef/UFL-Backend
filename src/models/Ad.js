@@ -74,3 +74,4 @@ Ad.init({
     tableName: 'ads',
     timestamps: true,
 });
+
