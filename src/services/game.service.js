@@ -5,6 +5,7 @@ const database_1 = require("../config/database");
 const models_1 = require("../models");
 const notification_service_1 = require("./notification.service");
 const draft_service_1 = require("./draft.service");
+const socket_server_1 = require("../infrastructure/socket/socket.server");
 const competitions_1 = require("../domain/competitions");
 class GameService {
     static async createGame(fixtureId, entryFee = 500) {
