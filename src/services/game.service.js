@@ -199,43 +199,44 @@ class GameService {
                 referenceId: `game-entry-${gameId}-${userId}`,
                 description: `Entry fee for Game Room ${gameId}`,
             }, { transaction: t });
-            // MVP Hack: Auto-fill with 3 bots to start draft immediately
+
             const currentCount = existingParticipants.length + 1;
-            if (currentCount === 1) {
-                const crypto = require('crypto');
-                for (let i = 2; i <= 4; i++) {
-                    const botId = crypto.randomUUID();
-                    await models_1.User.create({
-                        id: botId,
-                        username: `Bot_${botId.substring(0,4)}`,
-                        email: `bot_${botId}@ufl.com`,
-                        passwordHash: 'bot_pass',
-                        avatarUrl: 'https://api.dicebear.com/7.x/avataaars/png?seed=' + botId
-                    }, { transaction: t });
-                    
-                    await models_1.GameParticipant.create({ 
-                        gameId, 
-                        userId: botId, 
-                        draftPosition: i, 
-                        totalPoints: 0.0 
-                    }, { transaction: t });
-                }
-                // Change status to DRAFTING
+            const joiningUser = await models_1.User.findByPk(userId, { transaction: t, attributes: ['id', 'username', 'avatarUrl'] });
+
+            // Broadcast real-time participant-joined to all players in the room
+            socket_server_1.socketServer.broadcastToRoom(gameId, 'game:participant-joined', {
+                gameId,
+                participantCount: currentCount,
+                participant: {
+                    id: participant.id,
+                    userId,
+                    username: joiningUser?.username || 'Player',
+                    avatarUrl: joiningUser?.avatarUrl || null,
+                    draftPosition: participant.draftPosition,
+                },
+            });
+
+            // Start draft ONLY when all 4 human challengers have joined the room!
+            if (currentCount === 4) {
                 game.status = 'DRAFTING';
                 await game.save({ transaction: t });
-                // Start draft automatically after transaction commits
+
+                socket_server_1.socketServer.broadcastToRoom(gameId, 'game:draft-started', {
+                    gameId,
+                    status: 'DRAFTING',
+                });
+
                 setTimeout(() => {
-                    draft_service_1.DraftService.startDraft(gameId).catch(e => console.error('Failed to auto-start draft:', e));
+                    draft_service_1.DraftService.startDraft(gameId).catch((e) => console.error('Failed to start draft for 4 players:', e));
                 }, 1000);
             }
-            else if (currentCount === 4 && (!fixture || fixture.status === 'SCHEDULED')) {
-                game.status = 'DRAFTING';
-                await game.save({ transaction: t });
-            }
+
             return {
                 gameId: game.id,
                 participantId: participant.id,
                 draftPosition: participant.draftPosition,
+                participantCount: currentCount,
+                status: game.status,
                 remainingBalance: wallet.balance,
             };
         });

@@ -256,6 +256,8 @@ class SettlementService {
                         id: s.playerId,
                         name: pl?.name || 'Player',
                         position: pl?.position,
+                        photoUrl: pl?.photoUrl || null,
+                        avgPoints: pl?.avgPoints || 0,
                         isAutoPick: s.isAutoPick,
                     };
                 }),

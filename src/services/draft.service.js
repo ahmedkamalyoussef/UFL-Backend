@@ -78,9 +78,7 @@ class DraftService {
             // Clear existing turns for idempotency
             await models_1.DraftTurn.destroy({ where: { gameId }, transaction: t });
 
-            // Check if Turn 1 participant is a bot
-            const isP1Bot = await this.isParticipantBot(p1.id, t);
-            const p1DelayMs = isP1Bot ? 1800 : 30000;
+            const p1DelayMs = 30000; // 30 seconds for human manager turn
 
             const now = new Date();
             const firstTurnExpiresAt = new Date(now.getTime() + p1DelayMs);
@@ -183,6 +181,7 @@ class DraftService {
                     [sequelize_1.Op.notIn]: takenPlayerIds.length > 0 ? takenPlayerIds : ['none'],
                 },
             },
+            include: [{ model: models_1.Team, as: 'team', attributes: ['id', 'name', 'logoUrl'] }],
             order: [
                 ['avgPoints', 'DESC'],
                 ['id', 'ASC'],
@@ -221,7 +220,7 @@ class DraftService {
                     username: u?.username || 'Player',
                     avatarUrl: u?.avatarUrl || null,
                     draftPosition: p.draftPosition,
-                    isBot: Boolean(u?.email?.startsWith('bot_') || u?.username?.startsWith('Bot_')),
+                    isBot: false,
                 };
             }),
             turns: turns.map((t) => ({
@@ -246,14 +245,44 @@ class DraftService {
                     selectedAt: s.selectedAt,
                 };
             }),
-            availablePlayers: availablePlayers.map((p) => ({
-                id: p.id,
-                name: p.name,
-                position: p.position,
-                photoUrl: p.photoUrl,
-                isStar: p.isStar,
-                avgPoints: p.avgPoints,
-            })),
+            availablePlayers: availablePlayers.map((p) => {
+                const team = p.get('team');
+                const avg = p.avgPoints || 50;
+                const isAttacker = p.position === 'ATTACKER';
+                const isMidfielder = p.position === 'MIDFIELDER';
+                const isDefender = p.position === 'DEFENDER';
+                const isGK = p.position === 'GOALKEEPER';
+
+                const rating = Math.min(96, Math.max(72, Math.round(70 + (avg / 100) * 25)));
+                const goals = isAttacker ? Math.max(1, Math.round(avg * 0.25)) : isMidfielder ? Math.round(avg * 0.1) : isDefender ? Math.round(avg * 0.03) : 0;
+                const assists = isAttacker ? Math.round(avg * 0.12) : isMidfielder ? Math.max(1, Math.round(avg * 0.22)) : isDefender ? Math.round(avg * 0.05) : 0;
+                const passes = isMidfielder ? Math.round(avg * 16) : isDefender ? Math.round(avg * 12) : isAttacker ? Math.round(avg * 8) : Math.round(avg * 5);
+                const tackles = isDefender ? Math.max(2, Math.round(avg * 0.9)) : isMidfielder ? Math.round(avg * 0.6) : isAttacker ? Math.round(avg * 0.2) : 0;
+                const cleanSheet = isDefender || isGK ? Math.max(1, Math.round(avg * 0.18)) : 0;
+                const saves = isGK ? Math.max(3, Math.round(avg * 1.4)) : 0;
+                const bigChances = isAttacker ? Math.round(avg * 0.2) : isMidfielder ? Math.round(avg * 0.18) : 0;
+
+                return {
+                    id: p.id,
+                    name: p.name,
+                    position: p.position,
+                    photoUrl: p.photoUrl,
+                    isStar: p.isStar,
+                    avgPoints: p.avgPoints,
+                    rating,
+                    teamName: team?.name || 'Club',
+                    teamLogo: team?.logoUrl || p.photoUrl,
+                    goals,
+                    assists,
+                    passes,
+                    tackles,
+                    cleanSheet,
+                    saves,
+                    bigChances,
+                    yellowCards: Math.max(1, Math.round(avg * 0.04)),
+                    redCards: avg > 70 ? 0 : 1,
+                };
+            }),
         };
     }
 
@@ -336,8 +365,7 @@ class DraftService {
                     lock: t.LOCK.UPDATE,
                 });
 
-                const isNextBot = nextTurn ? await this.isParticipantBot(nextTurn.participantId, t) : false;
-                const delayMs = isNextBot ? 1800 : 30000;
+                const delayMs = 30000; // 30 seconds for human manager turn
 
                 const now = new Date();
                 nextTurnExpiresAt = new Date(now.getTime() + delayMs);
@@ -499,8 +527,7 @@ class DraftService {
                         lock: t.LOCK.UPDATE,
                     });
 
-                    const isNextBot = nextTurn ? await this.isParticipantBot(nextTurn.participantId, t) : false;
-                    const delayMs = isNextBot ? 1800 : 30000;
+                    const delayMs = 30000; // 30 seconds for human manager turn
 
                     const now = new Date();
                     const nextTurnExpiresAt = new Date(now.getTime() + delayMs);
