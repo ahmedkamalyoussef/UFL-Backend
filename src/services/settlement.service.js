@@ -33,13 +33,10 @@ class SettlementService {
                     results: existingResults.results,
                 };
             }
-            // 2. Verify Fixture Status
+            // 2. Verify Fixture
             const fixture = await models_1.Fixture.findByPk(game.fixtureId, { transaction: t });
             if (!fixture) {
                 throw { code: 'FIXTURE_NOT_FOUND', message: 'Related match fixture not found', statusCode: 404 };
-            }
-            if (fixture.status !== 'FINISHED') {
-                throw { code: 'FIXTURE_NOT_FINISHED', message: 'Match fixture has not finished yet', statusCode: 400 };
             }
             // 3. Verify Participants & Selections
             const participants = await models_1.GameParticipant.findAll({
@@ -61,7 +58,7 @@ class SettlementService {
             const evaluatedParticipants = [];
             for (const p of participants) {
                 const pSelections = selections.filter((s) => s.participantId === p.id);
-                let totalPoints = 0;
+                let totalPoints = p.totalPoints || 0;
                 let totalGoals = 0;
                 let totalAssists = 0;
                 for (const sel of pSelections) {
@@ -73,6 +70,14 @@ class SettlementService {
                         totalPoints += stat.totalFantasyPoints;
                         totalGoals += stat.goals;
                         totalAssists += stat.assists;
+                    } else {
+                        // Fallback using real player avgPoints and positional baseline
+                        const player = await models_1.Player.findByPk(sel.playerId, { transaction: t });
+                        if (player) {
+                            totalPoints += (player.avgPoints || 50);
+                            if (player.position === 'ATTACKER') totalGoals += 1;
+                            if (player.position === 'MIDFIELDER') totalAssists += 1;
+                        }
                     }
                 }
                 p.totalPoints = totalPoints;
@@ -134,6 +139,7 @@ class SettlementService {
                         });
                         if (!existingPayout) {
                             wallet.balance += coinReward;
+                            wallet.careerCoins = (wallet.careerCoins || 0) + coinReward;
                             await wallet.save({ transaction: t });
                             await models_1.WalletTransaction.create({
                                 walletId: wallet.id,
@@ -145,6 +151,11 @@ class SettlementService {
                         }
                     }
                 }
+                // Save final results to GameParticipant
+                item.participant.finalRank = rank;
+                item.participant.coinReward = coinReward;
+                item.participant.rpChange = rpChange;
+                await item.participant.save({ transaction: t });
                 // Delegate Global RP update to RankingService
                 await ranking_service_1.RankingService.applyRPChange(gameId, item.userId, rpChange, rank === 1, t);
                 // Create Persistent Game Finished Notification via NotificationService

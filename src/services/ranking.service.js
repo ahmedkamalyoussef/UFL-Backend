@@ -12,7 +12,7 @@ class RankingService {
     static async applyRPChange(gameId, userId, rpChange, isWinner = false, customTransaction) {
         const executeLogic = async (t) => {
             const activeSeason = await season_service_1.SeasonService.getActiveSeason(t);
-            const [globalRanking] = await models_1.GlobalRanking.findOrCreate({
+            const [globalRanking, created] = await models_1.GlobalRanking.findOrCreate({
                 where: { userId, seasonId: activeSeason.id },
                 defaults: {
                     seasonId: activeSeason.id,
@@ -24,7 +24,7 @@ class RankingService {
                 transaction: t,
                 lock: t.LOCK.UPDATE,
             });
-            if (globalRanking) {
+            if (globalRanking && !created) {
                 globalRanking.rankingPoints += rpChange; // Negative RP supported, no clamping
                 globalRanking.gamesPlayed += 1;
                 if (isWinner) {
