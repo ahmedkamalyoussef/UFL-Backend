@@ -31,7 +31,7 @@ class UserController {
             const userId = req.user.userId;
             const { avatarUrl } = req.body;
             if (!avatarUrl) {
-                res.status(400).json({ success: false, message: 'avatarUrl is required' });
+                (0, response_1.sendError)(res, 'VALIDATION_ERROR', 'avatarUrl is required', 400);
                 return;
             }
             const updated = await user_service_1.UserService.updateAvatar(userId, avatarUrl);

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const ranking_controller_1 = require("../controllers/ranking.controller");
 const auth_middleware_1 = require("../middleware/auth.middleware");
+const response_1 = require("../utils/response");
 const router = (0, express_1.Router)();
 // Internal / Admin secret guard middleware for season mutations
 const adminGuard = (req, res, next) => {
@@ -10,7 +11,7 @@ const adminGuard = (req, res, next) => {
     if (process.env.NODE_ENV === 'development' || adminKey === 'ufl-dev-admin-secret') {
         return next();
     }
-    return res.status(403).json({ success: false, error: { code: 'FORBIDDEN', message: 'Forbidden season management endpoint access' } });
+    return (0, response_1.sendError)(res, 'FORBIDDEN', 'Forbidden season management endpoint access', 403);
 };
 // Global Leaderboard & User Rank routes
 router.get('/ranking', ranking_controller_1.RankingController.getGlobalLeaderboard);

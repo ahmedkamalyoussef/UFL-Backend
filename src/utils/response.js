@@ -2,16 +2,18 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendSuccess = sendSuccess;
 exports.sendError = sendError;
-function sendSuccess(res, data, statusCode = 200) {
+function sendSuccess(res, data, statusCode = 200, message = null) {
     const response = {
         success: true,
+        ...(message ? { message } : {}),
         data,
     };
     return res.status(statusCode).json(response);
 }
-function sendError(res, code, message, statusCode = 400, details) {
+function sendError(res, code, message, statusCode = 400, details = null) {
     const response = {
         success: false,
+        message,
         error: {
             code,
             message,
@@ -20,3 +22,4 @@ function sendError(res, code, message, statusCode = 400, details) {
     };
     return res.status(statusCode).json(response);
 }
+
