@@ -1,7 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
+const sequelize_1 = require("sequelize");
+const database_1 = require("../config/database");
 const models_1 = require("../models");
+const password_1 = require("../utils/password");
+
 class UserService {
     static async getUserProfile(userId) {
         const user = await models_1.User.findByPk(userId, {
@@ -48,6 +52,7 @@ class UserService {
                 },
         };
     }
+
     static async updateAvatar(userId, avatarUrl) {
         const user = await models_1.User.findByPk(userId);
         if (!user) {
@@ -57,6 +62,77 @@ class UserService {
         await user.save();
         return this.getUserProfile(userId);
     }
+
+    static async updateProfile(userId, input) {
+        const user = await models_1.User.findByPk(userId);
+        if (!user) {
+            throw { code: 'USER_NOT_FOUND', message: 'User not found', statusCode: 404 };
+        }
+        if (input.username && input.username !== user.username) {
+            const existing = await models_1.User.findOne({
+                where: {
+                    username: input.username,
+                    id: { [sequelize_1.Op.ne]: userId },
+                },
+            });
+            if (existing) {
+                throw { code: 'DUPLICATE_USERNAME', message: 'This username is already taken', statusCode: 409 };
+            }
+            user.username = input.username;
+        }
+        if (input.avatarUrl !== undefined) {
+            user.avatarUrl = input.avatarUrl;
+        }
+        await user.save();
+        return this.getUserProfile(userId);
+    }
+
+    static async changePassword(userId, input) {
+        const user = await models_1.User.findByPk(userId);
+        if (!user) {
+            throw { code: 'USER_NOT_FOUND', message: 'User not found', statusCode: 404 };
+        }
+        const isMatch = await (0, password_1.comparePassword)(input.currentPassword, user.passwordHash);
+        if (!isMatch) {
+            throw { code: 'INVALID_CURRENT_PASSWORD', message: 'Current password is incorrect', statusCode: 400 };
+        }
+        const passwordHash = await (0, password_1.hashPassword)(input.newPassword);
+        user.passwordHash = passwordHash;
+        await user.save();
+        return {
+            message: 'Password changed successfully',
+        };
+    }
+
+    static async deleteAccount(userId, password) {
+        const user = await models_1.User.findByPk(userId);
+        if (!user) {
+            throw { code: 'USER_NOT_FOUND', message: 'User not found', statusCode: 404 };
+        }
+        if (password) {
+            const isMatch = await (0, password_1.comparePassword)(password, user.passwordHash);
+            if (!isMatch) {
+                throw { code: 'INVALID_PASSWORD', message: 'Password is incorrect', statusCode: 400 };
+            }
+        }
+
+        await database_1.sequelize.transaction(async (t) => {
+            const wallet = await models_1.Wallet.findOne({ where: { userId }, transaction: t });
+            if (wallet) {
+                await models_1.WalletTransaction.destroy({ where: { walletId: wallet.id }, transaction: t });
+                await wallet.destroy({ transaction: t });
+            }
+            await models_1.GlobalRanking.destroy({ where: { userId }, transaction: t });
+            await models_1.Notification.destroy({ where: { userId }, transaction: t });
+            await models_1.GameParticipant.destroy({ where: { userId }, transaction: t });
+            await user.destroy({ transaction: t });
+        });
+
+        return {
+            message: 'Account deleted successfully',
+        };
+    }
+
     static async getUserGameHistory(userId, page = 1, limit = 20) {
         const offset = (page - 1) * limit;
         const { count, rows } = await models_1.GameParticipant.findAndCountAll({

@@ -5,7 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.env = void 0;
 const dotenv_1 = __importDefault(require("dotenv"));
+const path_1 = __importDefault(require("path"));
 const zod_1 = require("zod");
+dotenv_1.default.config({ path: path_1.default.resolve(__dirname, '../../.env') });
 dotenv_1.default.config();
 const envSchema = zod_1.z.object({
     NODE_ENV: zod_1.z.enum(['development', 'production', 'test']).default('development'),
@@ -19,5 +21,10 @@ const envSchema = zod_1.z.object({
     JWT_EXPIRES_IN: zod_1.z.string().default('7d'),
     API_FOOTBALL_BASE_URL: zod_1.z.string().default('https://v3.football.api-sports.io'),
     API_FOOTBALL_KEY: zod_1.z.string().default(''),
+    EMAIL_HOST: zod_1.z.string().default('smtp.gmail.com'),
+    EMAIL_PORT: zod_1.z.string().transform((val) => parseInt(val, 10)).default('465'),
+    EMAIL_SECURE: zod_1.z.string().transform((val) => val === 'true' || val === '1').default('true'),
+    EMAIL_USER: zod_1.z.string().default(''),
+    EMAIL_PASS: zod_1.z.string().default(''),
 });
 exports.env = envSchema.parse(process.env);
