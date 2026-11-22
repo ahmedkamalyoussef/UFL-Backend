@@ -57,6 +57,7 @@ class SettlementService {
             // 4. Recalculate Fantasy Scores & Tie-Breaker Metrics
             const evaluatedParticipants = [];
             for (const p of participants) {
+                const user = await models_1.User.findByPk(p.userId, { transaction: t });
                 const pSelections = selections.filter((s) => s.participantId === p.id);
                 let totalPoints = p.totalPoints || 0;
                 let totalGoals = 0;
@@ -85,6 +86,7 @@ class SettlementService {
                 evaluatedParticipants.push({
                     participant: p,
                     userId: p.userId,
+                    username: user?.username || 'Player',
                     totalPoints,
                     totalGoals,
                     totalAssists,
@@ -169,9 +171,12 @@ class SettlementService {
                 }, t);
                 settlementResults.push({
                     rank,
+                    finalRank: rank,
                     participantId: item.participant.id,
                     userId: item.userId,
+                    username: item.username,
                     fantasyPoints: item.totalPoints,
+                    totalPoints: item.totalPoints,
                     coinReward,
                     rpChange,
                 });

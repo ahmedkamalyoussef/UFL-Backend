@@ -47,7 +47,7 @@ class ApiFootballProvider {
         }
         return result;
     }
-    async getFixtures(competitionId, status) {
+    async getFixtures(competitionId, status, targetDate) {
         if (!this.client.isConfigured()) {
             return [];
         }
@@ -56,21 +56,23 @@ class ApiFootballProvider {
         if (status === 'LIVE' || status === 'HALFTIME') {
             params.live = 'all';
         } else {
-            // Otherwise, get next 15 upcoming fixtures
-            params.next = 15;
+            // On API-Football Free plan, querying by date is fully allowed without season or league restrictions
+            params.date = targetDate || new Date().toISOString().split('T')[0];
         }
+
+        const data = await this.client.get('/fixtures', params);
+        const items = data.response || [];
+        let fixtures = items
+            .map((item) => this.normalizeFixture(item))
+            .filter((f) => Boolean(f));
 
         if (competitionId) {
             const compMeta = Object.values(competitions_1.SUPPORTED_COMPETITIONS).find((c) => `comp-${c.code.toLowerCase()}` === competitionId || c.code === competitionId);
             if (compMeta) {
-                params.league = compMeta.externalId;
+                fixtures = fixtures.filter((f) => f.competitionId === `comp-${compMeta.code.toLowerCase()}`);
             }
         }
-        const data = await this.client.get('/fixtures', params);
-        const items = data.response || [];
-        return items
-            .map((item) => this.normalizeFixture(item))
-            .filter((f) => Boolean(f));
+        return fixtures;
     }
     async getFixture(fixtureId) {
         if (!this.client.isConfigured()) {

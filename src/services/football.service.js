@@ -28,6 +28,23 @@ class FootballService {
         if (competitionId) {
             whereClause.competitionId = competitionId;
         }
+
+        // Only return today's and future matches for upcoming (or live/recent),
+        // filtering out stale historical fixtures older than today.
+        const startOfToday = new Date();
+        startOfToday.setHours(0, 0, 0, 0);
+
+        if (!status) {
+            // If no status specified, show LIVE first, then SCHEDULED from today onwards
+            whereClause[sequelize_1.Op.or] = [
+                { status: { [sequelize_1.Op.in]: ['LIVE', 'HALFTIME'] } },
+                {
+                    status: 'SCHEDULED',
+                    startTime: { [sequelize_1.Op.gte]: startOfToday },
+                },
+            ];
+        }
+
         const fixtures = await models_1.Fixture.findAll({
             where: whereClause,
             include: [
@@ -35,7 +52,11 @@ class FootballService {
                 { model: models_1.Team, as: 'homeTeam' },
                 { model: models_1.Team, as: 'awayTeam' },
             ],
-            order: [['startTime', 'ASC']],
+            order: [
+                // Live matches first, then chronological by startTime
+                [sequelize_1.Sequelize.literal(`CASE WHEN \`Fixture\`.\`status\` IN ('LIVE', 'HALFTIME') THEN 0 ELSE 1 END`), 'ASC'],
+                ['startTime', 'ASC'],
+            ],
         });
         // Filter strictly by supported competition whitelist
         return fixtures.filter((f) => f.get('competition') && (0, competitions_1.isSupportedCompetition)(f.get('competition').code));

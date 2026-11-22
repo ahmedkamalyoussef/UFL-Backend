@@ -48,14 +48,16 @@ class FootballSyncService {
         const provider = (0, football_1.getFootballProvider)();
         let fixtureDTOs = [];
         
-        if (competitionId) {
+        if (status === 'LIVE' || status === 'HALFTIME') {
             fixtureDTOs = await provider.getFixtures(competitionId, status);
         } else {
-            // Fetch for all supported competitions
-            for (const code of competitions_1.SUPPORTED_COMPETITION_CODES) {
-                const dtos = await provider.getFixtures(code, status);
-                fixtureDTOs.push(...dtos);
-            }
+            // Fetch fixtures for today and tomorrow in 2 API calls (handles all supported competitions efficiently)
+            const today = new Date().toISOString().split('T')[0];
+            const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+            
+            const todayFixtures = await provider.getFixtures(competitionId, status, today);
+            const tomorrowFixtures = await provider.getFixtures(competitionId, status, tomorrow);
+            fixtureDTOs = [...todayFixtures, ...tomorrowFixtures];
         }
 
         let syncedCount = 0;
