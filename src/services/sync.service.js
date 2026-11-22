@@ -176,6 +176,8 @@ class FootballSyncService {
                 const player = await models_1.Player.findOne({ where: { externalId: extPlayerId } });
                 if (player) {
                     evt.playerId = player.id;
+                } else {
+                    evt.playerId = null;
                 }
             }
             const res = await scoring_service_1.ScoringService.processFixtureEvent(fixture.id, evt);
